@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Calendar, Users, Wrench, Eye, Loader2 } from "lucide-react";
+import { MapPin, Calendar, Users, Wrench, Eye, Loader2, ExternalLink } from "lucide-react";
 import { useProjects, Project } from "@/hooks/useProjects";
-import { ProjectModal } from "./projects/ProjectModal";
 
 // Fallback project data for when Supabase is empty
 const fallbackProjects = [
@@ -52,7 +52,7 @@ const fallbackProjects = [
 
 const Projects = () => {
   const [selectedCategory, setSelectedCategory] = useState("Todos");
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const navigate = useNavigate();
   const { data: supabaseProjects, isLoading, error } = useProjects();
 
   // Use Supabase projects if available, otherwise fallback
@@ -64,23 +64,12 @@ const Projects = () => {
     ? projects 
     : projects.filter(project => project.category === selectedCategory);
 
-  // Check for project in URL on mount
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const projectSlug = urlParams.get('project');
-    if (projectSlug && projects.length > 0) {
-      const project = projects.find(p => p.slug === projectSlug);
-      if (project) {
-        setSelectedProject(project);
-      }
-    }
-  }, [projects]);
-
   const scrollToContact = () => {
-    setSelectedProject(null);
-    setTimeout(() => {
-      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const viewProjectDetails = (project: Project) => {
+    navigate(`/projeto/${project.slug}`);
   };
 
   return (
@@ -177,7 +166,7 @@ const Projects = () => {
                   </div>
                   <Button 
                     size="sm"
-                    onClick={() => setSelectedProject(project)}
+                    onClick={() => viewProjectDetails(project)}
                     className="hover-scale shadow-md"
                   >
                     <Eye className="w-4 h-4 mr-2" />
@@ -196,36 +185,29 @@ const Projects = () => {
           </div>
         )}
 
-        {/* Call to Action */}
-        <div className="text-center mt-16 animate-fade-in">
-          <div className="bg-gradient-primary p-8 rounded-2xl text-white shadow-elegant hover:shadow-glow transition-shadow duration-300">
-            <h3 className="text-2xl font-bold mb-4">
-              Tem um projeto em mente?
-            </h3>
-            <p className="text-xl text-white/90 mb-6 max-w-2xl mx-auto">
-              Entre em contacto connosco e descubra como podemos transformar as suas ideias em realidade.
-            </p>
-            <Button 
-              variant="secondary" 
-              size="lg"
-              onClick={scrollToContact}
-              className="bg-white text-primary hover:bg-white/90 hover-scale shadow-lg"
-            >
-              <Wrench className="w-5 h-5 mr-2" />
-              Solicitar Orçamento
-            </Button>
-          </div>
+      {/* Call to Action */}
+      <div className="text-center mt-16 animate-fade-in">
+        <div className="bg-gradient-primary p-8 rounded-2xl text-white shadow-elegant hover:shadow-glow transition-shadow duration-300">
+          <h3 className="text-2xl font-bold mb-4">
+            Tem um projeto em mente?
+          </h3>
+          <p className="text-xl text-white/90 mb-6 max-w-2xl mx-auto">
+            Entre em contacto connosco e descubra como podemos transformar as suas ideias em realidade.
+          </p>
+          <Button 
+            variant="secondary" 
+            size="lg"
+            onClick={scrollToContact}
+            className="bg-white text-primary hover:bg-white/90 hover-scale shadow-lg"
+          >
+            <Wrench className="w-5 h-5 mr-2" />
+            Solicitar Orçamento
+          </Button>
         </div>
       </div>
-
-      {/* Enhanced Project Modal */}
-      <ProjectModal
-        project={selectedProject}
-        isOpen={selectedProject !== null}
-        onClose={() => setSelectedProject(null)}
-      />
-    </section>
-  );
+    </div>
+  </section>
+);
 };
 
 export default Projects;
