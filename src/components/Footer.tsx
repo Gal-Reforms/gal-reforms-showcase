@@ -45,19 +45,28 @@ const Footer = () => {
             {/* Social Media */}
             <div className="flex space-x-4">
               <a 
-                href="#" 
+                href="https://facebook.com/galreforms" 
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Siga-nos no Facebook"
                 className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary-light transition-colors"
               >
                 <Facebook className="w-5 h-5 text-white" />
               </a>
               <a 
-                href="#" 
+                href="https://instagram.com/galreforms" 
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Siga-nos no Instagram"
                 className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary-light transition-colors"
               >
                 <Instagram className="w-5 h-5 text-white" />
               </a>
               <a 
-                href="#" 
+                href="https://linkedin.com/company/galreforms" 
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Conecte-se no LinkedIn"
                 className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary-light transition-colors"
               >
                 <Linkedin className="w-5 h-5 text-white" />
@@ -148,10 +157,10 @@ const Footer = () => {
               © {currentYear} Gal Reforms S.L. Todos os direitos reservados.
             </p>
             <div className="flex space-x-6 text-sm">
-              <a href="#" className="text-background/60 hover:text-primary transition-colors">
+              <a href="/politica-de-privacidade" className="text-background/60 hover:text-primary transition-colors">
                 Política de Privacidade
               </a>
-              <a href="#" className="text-background/60 hover:text-primary transition-colors">
+              <a href="/termos-de-servico" className="text-background/60 hover:text-primary transition-colors">
                 Termos de Serviço
               </a>
             </div>
