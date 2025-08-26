@@ -193,14 +193,14 @@ export const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) =>
                     </div>
                   )}
                   
-                  {project.materials && Object.keys(project.materials).length > 0 && (
+                  {project.materials && typeof project.materials === 'object' && Object.keys(project.materials).length > 0 && (
                     <div className="mb-8">
                       <h3 className="text-xl font-semibold mb-4">Materiais Utilizados</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {Object.entries(project.materials).map(([key, value]) => (
                           <div key={key} className="p-4 bg-muted/50 rounded-lg">
                             <div className="font-medium capitalize mb-1">{key}</div>
-                            <div className="text-muted-foreground text-sm">{value}</div>
+                            <div className="text-muted-foreground text-sm">{String(value)}</div>
                           </div>
                         ))}
                       </div>
