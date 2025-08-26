@@ -14,7 +14,101 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      project_images: {
+        Row: {
+          caption: string | null
+          created_at: string
+          id: string
+          image_type: string
+          image_url: string
+          order_index: number
+          project_id: string
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          image_type: string
+          image_url: string
+          order_index?: number
+          project_id: string
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          image_type?: string
+          image_url?: string
+          order_index?: number
+          project_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_images_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      projects: {
+        Row: {
+          area_sqm: number | null
+          budget_range: string | null
+          category: string
+          client: string | null
+          completion_date: string | null
+          cover_image: string | null
+          created_at: string
+          description: string | null
+          features: string[] | null
+          id: string
+          location: string | null
+          materials: Json | null
+          published: boolean
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          area_sqm?: number | null
+          budget_range?: string | null
+          category: string
+          client?: string | null
+          completion_date?: string | null
+          cover_image?: string | null
+          created_at?: string
+          description?: string | null
+          features?: string[] | null
+          id?: string
+          location?: string | null
+          materials?: Json | null
+          published?: boolean
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          area_sqm?: number | null
+          budget_range?: string | null
+          category?: string
+          client?: string | null
+          completion_date?: string | null
+          cover_image?: string | null
+          created_at?: string
+          description?: string | null
+          features?: string[] | null
+          id?: string
+          location?: string | null
+          materials?: Json | null
+          published?: boolean
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
