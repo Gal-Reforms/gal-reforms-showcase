@@ -23,6 +23,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { t } from "@/lib/translations";
 
 const adminNavItems = [
@@ -96,7 +97,10 @@ export function AdminSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <div className="mt-auto p-4">
+        <div className="mt-auto p-4 space-y-2">
+          <div className="flex justify-center">
+            <ThemeToggle />
+          </div>
           <Button
             onClick={handleSignOut}
             variant="outline"
