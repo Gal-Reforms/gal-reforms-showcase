@@ -67,8 +67,8 @@ export default function ProjectFormTabs() {
   const createProject = useCreateProject();
   const updateProject = useUpdateProject();
 
-  // Create a temporary project ID for new projects to enable media uploads
-  const [tempProjectId] = useState(() => `temp-${crypto.randomUUID()}`);
+  // For new projects, generate a proper UUID that won't be used in database operations
+  const [tempProjectId] = useState(() => crypto.randomUUID());
   const currentProjectId = isEditing ? id! : tempProjectId;
 
   const [selectedStartDate, setSelectedStartDate] = useState<Date | undefined>();
