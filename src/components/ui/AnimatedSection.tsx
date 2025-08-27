@@ -21,7 +21,7 @@ export const AnimatedSection: React.FC<AnimatedSectionProps> = ({
 }) => {
   const [ref, isVisible] = useScrollReveal({
     threshold,
-    delay,
+    delay: 0, // Handle delay through CSS animation-delay instead
     triggerOnce
   });
 
@@ -39,10 +39,13 @@ export const AnimatedSection: React.FC<AnimatedSectionProps> = ({
     <div
       ref={ref}
       className={cn(
-        'opacity-0 transform',
-        isVisible && animationClasses[animation],
+        'transition-opacity duration-300',
+        isVisible ? `opacity-100 ${animationClasses[animation]}` : 'opacity-0',
         className
       )}
+      style={{
+        animationDelay: isVisible ? `${delay}ms` : '0ms'
+      }}
     >
       {children}
     </div>
