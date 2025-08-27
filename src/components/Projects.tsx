@@ -73,7 +73,7 @@ const Projects = () => {
   };
 
   const viewProjectDetails = (project: Project) => {
-    navigate(`/projeto/${project.slug}`);
+    navigate(`/proyecto/${project.slug}`);
   };
 
   const [staggerRef, visibleItems] = useStaggeredReveal(filteredProjects.length, 200);
