@@ -15,7 +15,8 @@ export default function Auth() {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
 
-  const from = location.state?.from?.pathname || '/';
+  // If accessing /auth directly, redirect to admin after login
+  const from = location.state?.from?.pathname || '/admin';
 
   // Redirect if already authenticated
   if (user && !loading) {
