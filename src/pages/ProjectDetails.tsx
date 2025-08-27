@@ -18,6 +18,8 @@ import {
   Loader2
 } from "lucide-react";
 import { useProject } from "@/hooks/useProject";
+import { useContentBlocks } from "@/hooks/useContentBlocks";
+import { ContentBlockRenderer } from "@/components/content-blocks/ContentBlockRenderer";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -36,6 +38,7 @@ import { OptimizedImage } from "@/components/seo/ImageOptimizer";
 const ProjectDetails = () => {
   const { slug } = useParams<{ slug: string }>();
   const { data: project, isLoading, error } = useProject(slug || '');
+  const { data: contentBlocks } = useContentBlocks(project?.id || '');
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -190,8 +193,9 @@ const ProjectDetails = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-7xl mx-auto">
             <Tabs defaultValue="gallery" className="w-full">
-              <TabsList className="grid w-full grid-cols-4 mb-8">
+              <TabsList className="grid w-full grid-cols-5 mb-8">
                 <TabsTrigger value="gallery">{t('gallery')}</TabsTrigger>
+                <TabsTrigger value="content">Conteúdo</TabsTrigger>
                 <TabsTrigger value="beforeafter">{t('beforeAfter')}</TabsTrigger>
                 <TabsTrigger value="videos">Vídeos</TabsTrigger>
                 <TabsTrigger value="details">{t('projectDetails')}</TabsTrigger>
@@ -205,6 +209,28 @@ const ProjectDetails = () => {
                     <ProjectGallery images={project.galleryImages} />
                   ) : (
                     <p className="text-muted-foreground text-center py-12">No hay imágenes disponibles</p>
+                  )}
+                </AnimatedSection>
+              </TabsContent>
+
+              {/* Content Blocks Tab */}
+              <TabsContent value="content" className="space-y-6">
+                <AnimatedSection>
+                  <h2 className="text-3xl font-bold mb-6">Conteúdo do Projeto</h2>
+                  {contentBlocks && contentBlocks.length > 0 ? (
+                    <ContentBlockRenderer blocks={contentBlocks} />
+                  ) : (
+                    <div className="text-center py-12">
+                      <p className="text-muted-foreground mb-4">Nenhum conteúdo personalizado disponível.</p>
+                      {project.long_description && (
+                        <div className="max-w-4xl mx-auto text-left">
+                          <div 
+                            className="prose prose-gray dark:prose-invert max-w-none"
+                            dangerouslySetInnerHTML={{ __html: project.long_description }}
+                          />
+                        </div>
+                      )}
+                    </div>
                   )}
                 </AnimatedSection>
               </TabsContent>

@@ -41,6 +41,36 @@ export type Database = {
         }
         Relationships: []
       }
+      project_content_blocks: {
+        Row: {
+          block_type: string
+          content: Json
+          created_at: string
+          id: string
+          order_index: number
+          project_id: string
+          updated_at: string
+        }
+        Insert: {
+          block_type: string
+          content?: Json
+          created_at?: string
+          id?: string
+          order_index?: number
+          project_id: string
+          updated_at?: string
+        }
+        Update: {
+          block_type?: string
+          content?: Json
+          created_at?: string
+          id?: string
+          order_index?: number
+          project_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       project_images: {
         Row: {
           alt_text: string | null

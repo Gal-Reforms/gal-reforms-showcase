@@ -1,3 +1,4 @@
+import { ContentBlockManager } from '@/components/content-blocks/ContentBlockManager';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,7 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Save, Calendar as CalendarIcon, Plus, X, Info, Image, Video, Search } from 'lucide-react';
+import { ArrowLeft, Save, Calendar as CalendarIcon, Plus, X, Info, Image, Video, Search, FileText } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ImageUpload } from '@/components/admin/ImageUpload';
 import { CoverImageManager } from '@/components/admin/CoverImageManager';
@@ -308,12 +309,16 @@ export default function ProjectFormTabs() {
 
       <form id="project-form" onSubmit={handleSubmit(onSubmit)}>
         <Tabs defaultValue="info" className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="info" className="flex items-center gap-2">
               <Info className="w-4 h-4" />
               Informações
             </TabsTrigger>
             <TabsTrigger value="materials">Materiais</TabsTrigger>
+            <TabsTrigger value="content" className="flex items-center gap-2">
+              <FileText className="w-4 h-4" />
+              Conteúdo
+            </TabsTrigger>
             <TabsTrigger value="media" className="flex items-center gap-2">
               <Image className="w-4 h-4" />
               Mídia
@@ -617,6 +622,25 @@ export default function ProjectFormTabs() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Content Blocks Tab */}
+          <TabsContent value="content" className="space-y-6">
+            {!isEditing && (
+              <Card>
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2 text-blue-600 bg-blue-50 p-3 rounded-lg">
+                    <Info className="w-4 h-4" />
+                    <p className="text-sm">
+                      Os blocos de conteúdo permitem criar uma estrutura personalizada para a página do projeto. 
+                      Você pode adicionar e reordenar blocos mesmo antes de salvar o projeto.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            <ContentBlockManager projectId={currentProjectId} />
           </TabsContent>
 
           {/* Materials Tab */}
