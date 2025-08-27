@@ -154,7 +154,7 @@ const Projects = () => {
                   <MapPin className="w-4 h-4" />
                   <span>{project.location}</span>
                   <Calendar className="w-4 h-4 ml-4" />
-                  <span>{project.year}</span>
+                  <span>{new Date(project.completion_date || project.created_at).getFullYear()}</span>
                 </div>
                 
                 <CardTitle className="text-xl mb-3 group-hover:text-primary transition-colors duration-300">

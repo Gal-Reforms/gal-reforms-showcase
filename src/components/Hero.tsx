@@ -74,14 +74,14 @@ const Hero = () => {
       <div className="relative z-10 h-full flex items-center">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-4xl text-white">
-            <div className="animate-fade-in">
-              <h1 className="text-hero font-serif mb-6">
-                {slides[currentSlide].title}
-              </h1>
-              <p className="text-subtitle mb-8 max-w-2xl opacity-90">
-                {slides[currentSlide].subtitle}
-              </p>
-              
+              <AnimatedSection animation="fade-in-up" delay={0}>
+                <h1 className="text-hero font-serif mb-6">
+                  {slides[currentSlide].title}
+                </h1>
+                <p className="text-subtitle mb-8 max-w-2xl opacity-90">
+                  {slides[currentSlide].subtitle}
+                </p>
+                
                 <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-fade-in-up">
                   <Button 
                     size="lg" 
@@ -99,8 +99,7 @@ const Hero = () => {
                     {t('viewProjects')}
                   </Button>
                 </div>
-              </div>
-            </AnimatedSection>
+              </AnimatedSection>
 
             {/* Stats */}
             <AnimatedSection animation="fade-in-up" delay={600}>
@@ -128,7 +127,6 @@ const Hero = () => {
                 </div>
               </div>
             </AnimatedSection>
-            </div>
           </div>
         </div>
       </div>

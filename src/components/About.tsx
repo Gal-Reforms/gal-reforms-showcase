@@ -93,7 +93,7 @@ const About = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent rounded-2xl" />
             </div>
-          </div>
+          </AnimatedSection>
         </div>
 
         {/* Features Grid */}

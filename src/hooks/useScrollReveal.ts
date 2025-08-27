@@ -16,7 +16,7 @@ export const useScrollReveal = (options: UseScrollRevealOptions = {}) => {
   } = options;
 
   const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -54,7 +54,7 @@ export const useScrollReveal = (options: UseScrollRevealOptions = {}) => {
 // Hook for staggered animations
 export const useStaggeredReveal = (itemCount: number, staggerDelay: number = 100) => {
   const [visibleItems, setVisibleItems] = useState<boolean[]>(new Array(itemCount).fill(false));
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
