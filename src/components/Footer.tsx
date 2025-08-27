@@ -1,10 +1,13 @@
 import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Linkedin } from "lucide-react";
 import { t } from "@/lib/translations";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { data: settings, isLoading } = useSiteSettings();
 
-  const services = [
+  // Fallback data if settings haven't loaded yet
+  const services = settings?.services_list || [
     "Construcción Residencial",
     t('completeReforms'), 
     t('kitchenReforms'),
@@ -13,7 +16,7 @@ const Footer = () => {
     "Consultoría Técnica"
   ];
 
-  const quickLinks = [
+  const quickLinks = settings?.quick_links_list || [
     { name: t('home'), href: "#home" },
     { name: t('about'), href: "#about" },
     { name: t('projects'), href: "#projects" },
@@ -38,15 +41,16 @@ const Footer = () => {
                 className="h-12 w-auto mb-4 brightness-0 invert"
               />
               <p className="text-background/80 leading-relaxed">
-                Transformamos espacios con calidad excepcional desde hace más de 15 años. 
-                Tu satisfacción es nuestra prioridad.
+                {settings?.company_description || 
+                 "Transformamos espacios con calidad excepcional desde hace más de 15 años. Tu satisfacción es nuestra prioridad."
+                }
               </p>
             </div>
             
             {/* Social Media */}
             <div className="flex space-x-4">
               <a 
-                href="https://facebook.com/galreforms" 
+                href={settings?.facebook_url || "https://facebook.com/galreforms"} 
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Siga-nos no Facebook"
@@ -55,7 +59,7 @@ const Footer = () => {
                 <Facebook className="w-5 h-5 text-white" />
               </a>
               <a 
-                href="https://instagram.com/galreforms" 
+                href={settings?.instagram_url || "https://instagram.com/galreforms"} 
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Siga-nos no Instagram"
@@ -64,7 +68,7 @@ const Footer = () => {
                 <Instagram className="w-5 h-5 text-white" />
               </a>
               <a 
-                href="https://linkedin.com/company/galreforms" 
+                href={settings?.linkedin_url || "https://linkedin.com/company/galreforms"} 
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Conecte-se no LinkedIn"
@@ -119,7 +123,7 @@ const Footer = () => {
               <div className="flex items-start space-x-3">
                 <MapPin className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-background/80">Madrid, Espanha</p>
+                  <p className="text-background/80">{settings?.address || "Madrid, Espanha"}</p>
                   <p className="text-background/60 text-sm">Atendemos toda região</p>
                 </div>
               </div>
@@ -127,7 +131,7 @@ const Footer = () => {
               <div className="flex items-start space-x-3">
                 <Phone className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-background/80">+34 XXX XXX XXX</p>
+                  <p className="text-background/80">{settings?.phone_number || "+34 XXX XXX XXX"}</p>
                   <p className="text-background/60 text-sm">WhatsApp disponível</p>
                 </div>
               </div>
@@ -135,7 +139,7 @@ const Footer = () => {
               <div className="flex items-start space-x-3">
                 <Mail className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-background/80">contato@galreforms.com</p>
+                  <p className="text-background/80">{settings?.email || "contato@galreforms.com"}</p>
                   <p className="text-background/60 text-sm">Resposta em 24h</p>
                 </div>
               </div>
@@ -143,8 +147,8 @@ const Footer = () => {
               <div className="flex items-start space-x-3">
                 <Clock className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                 <div>
-                  <p className="text-background/80">Seg - Sex: 8h às 18h</p>
-                  <p className="text-background/60 text-sm">Sáb: 9h às 14h</p>
+                  <p className="text-background/80">{settings?.working_hours_weekdays || "Seg - Sex: 8h às 18h"}</p>
+                  <p className="text-background/60 text-sm">{settings?.working_hours_saturday || "Sáb: 9h às 14h"}</p>
                 </div>
               </div>
             </div>
@@ -158,10 +162,10 @@ const Footer = () => {
               © {currentYear} Gal Reforms S.L. Todos os direitos reservados.
             </p>
             <div className="flex space-x-6 text-sm">
-              <a href="/politica-de-privacidade" className="text-background/60 hover:text-primary transition-colors">
+              <a href={settings?.privacy_policy_url || "/politica-de-privacidade"} className="text-background/60 hover:text-primary transition-colors">
                 Política de Privacidade
               </a>
-              <a href="/termos-de-servico" className="text-background/60 hover:text-primary transition-colors">
+              <a href={settings?.terms_of_service_url || "/termos-de-servico"} className="text-background/60 hover:text-primary transition-colors">
                 Termos de Serviço
               </a>
             </div>

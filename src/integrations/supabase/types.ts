@@ -253,6 +253,66 @@ export type Database = {
           },
         ]
       }
+      site_settings: {
+        Row: {
+          address: string | null
+          company_description: string | null
+          created_at: string
+          email: string | null
+          facebook_url: string | null
+          id: string
+          instagram_url: string | null
+          linkedin_url: string | null
+          phone_number: string | null
+          privacy_policy_url: string | null
+          quick_links_list: Json | null
+          services_list: Json | null
+          terms_of_service_url: string | null
+          updated_at: string
+          whatsapp_number: string | null
+          working_hours_saturday: string | null
+          working_hours_weekdays: string | null
+        }
+        Insert: {
+          address?: string | null
+          company_description?: string | null
+          created_at?: string
+          email?: string | null
+          facebook_url?: string | null
+          id?: string
+          instagram_url?: string | null
+          linkedin_url?: string | null
+          phone_number?: string | null
+          privacy_policy_url?: string | null
+          quick_links_list?: Json | null
+          services_list?: Json | null
+          terms_of_service_url?: string | null
+          updated_at?: string
+          whatsapp_number?: string | null
+          working_hours_saturday?: string | null
+          working_hours_weekdays?: string | null
+        }
+        Update: {
+          address?: string | null
+          company_description?: string | null
+          created_at?: string
+          email?: string | null
+          facebook_url?: string | null
+          id?: string
+          instagram_url?: string | null
+          linkedin_url?: string | null
+          phone_number?: string | null
+          privacy_policy_url?: string | null
+          quick_links_list?: Json | null
+          services_list?: Json | null
+          terms_of_service_url?: string | null
+          updated_at?: string
+          whatsapp_number?: string | null
+          working_hours_saturday?: string | null
+          working_hours_weekdays?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string | null

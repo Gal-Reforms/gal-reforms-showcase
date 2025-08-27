@@ -9,6 +9,7 @@ import {
   Menu,
   Home,
   Search,
+  Settings,
 } from "lucide-react";
 import {
   Sidebar,
@@ -32,6 +33,7 @@ const adminNavItems = [
   { title: t('newProject'), url: "/admin/projects/new", icon: Plus },
   { title: t('categories'), url: "/admin/categories", icon: Tags },
   { title: 'SEO', url: "/admin/seo", icon: Search },
+  { title: 'Configurações', url: "/admin/settings", icon: Settings },
 ];
 
 export function AdminSidebar() {
