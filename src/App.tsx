@@ -16,6 +16,7 @@ import Categories from "./pages/admin/Categories";
 import CategoryForm from "./pages/admin/CategoryForm";
 import Projects from "./pages/admin/Projects";
 import ProjectForm from "./pages/admin/ProjectForm";
+import SEOSettings from "./pages/admin/SEOSettings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -47,6 +48,7 @@ const App = () => (
               <Route path="projects" element={<Projects />} />
               <Route path="projects/new" element={<ProjectForm />} />
               <Route path="projects/:id/edit" element={<ProjectForm />} />
+              <Route path="seo" element={<SEOSettings />} />
             </Route>
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

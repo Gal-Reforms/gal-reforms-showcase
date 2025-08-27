@@ -29,6 +29,9 @@ import { t } from "@/lib/translations";
 import { formatDate, formatCurrency } from "@/lib/dateUtils";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { useSEO } from "@/hooks/useSEO";
+import { ProjectSchema, BreadcrumbSchema } from "@/components/seo/StructuredData";
+import { OptimizedImage } from "@/components/seo/ImageOptimizer";
 
 const ProjectDetails = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -36,19 +39,22 @@ const ProjectDetails = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  useEffect(() => {
-    if (project) {
-      document.title = `${project.title} - Gal Reforms`;
-      
-      const metaDescription = document.querySelector('meta[name="description"]');
-      if (metaDescription) {
-        metaDescription.setAttribute(
-          'content', 
-          project.description?.substring(0, 160) || `Proyecto de ${project.category} en ${project.location}`
-        );
-      }
-    }
-  }, [project]);
+  // SEO optimization
+  useSEO({
+    title: project ? `${project.title} - Gal Reforms S.L` : 'Proyecto - Gal Reforms S.L',
+    description: project 
+      ? (project.description?.substring(0, 160) || `Proyecto de ${project.category} en ${project.location} realizado por Gal Reforms S.L`)
+      : 'Descubre nuestros proyectos de construcción y reformas de alta calidad',
+    keywords: project 
+      ? `${project.category}, reforma, construcción, ${project.location}, Gal Reforms`.trim()
+      : 'construcción, reformas, Madrid, España',
+    image: project?.cover_image || `${window.location.origin}/placeholder-project.jpg`,
+    url: window.location.href,
+    type: 'article',
+    author: 'Gal Reforms S.L',
+    publishedTime: project?.created_at,
+    modifiedTime: project?.updated_at
+  });
 
   if (isLoading) {
     return (
@@ -115,17 +121,30 @@ const ProjectDetails = () => {
     window.open(`https://wa.me/34612345678?text=${encodedMessage}`, '_blank');
   };
 
+  // Breadcrumb data for structured data
+  const breadcrumbItems = [
+    { name: 'Inicio', url: window.location.origin },
+    { name: 'Proyectos', url: `${window.location.origin}/#projects` },
+    { name: project?.title || 'Proyecto', url: window.location.href }
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
+      
+      {/* Structured Data */}
+      {project && <ProjectSchema project={project} />}
+      <BreadcrumbSchema items={breadcrumbItems} />
 
       {/* Hero Section */}
       <section className="relative h-[60vh] overflow-hidden">
-        <LazyImage
+        <OptimizedImage
           src={project.cover_image || '/placeholder-project.jpg'}
-          alt={project.title}
+          alt={`${project.title} - Proyecto de ${project.category} por Gal Reforms S.L`}
           className="w-full h-full object-cover"
           quality="high"
+          priority={true}
+          sizes="100vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/20" />
         

@@ -8,6 +8,7 @@ import {
   LogOut,
   Menu,
   Home,
+  Search,
 } from "lucide-react";
 import {
   Sidebar,
@@ -29,6 +30,7 @@ const adminNavItems = [
   { title: t('projects'), url: "/admin/projects", icon: FolderOpen },
   { title: t('newProject'), url: "/admin/projects/new", icon: Plus },
   { title: t('categories'), url: "/admin/categories", icon: Tags },
+  { title: 'SEO', url: "/admin/seo", icon: Search },
 ];
 
 export function AdminSidebar() {
