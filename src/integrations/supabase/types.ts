@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      categories: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          name: string
+          slug: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          slug: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          slug?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       project_images: {
         Row: {
           caption: string | null
@@ -44,6 +71,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "fk_project_images_project_id"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "project_images_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
@@ -57,6 +91,7 @@ export type Database = {
           area_sqm: number | null
           budget_range: string | null
           category: string
+          category_id: string | null
           client: string | null
           completion_date: string | null
           cover_image: string | null
@@ -75,6 +110,7 @@ export type Database = {
           area_sqm?: number | null
           budget_range?: string | null
           category: string
+          category_id?: string | null
           client?: string | null
           completion_date?: string | null
           cover_image?: string | null
@@ -93,6 +129,7 @@ export type Database = {
           area_sqm?: number | null
           budget_range?: string | null
           category?: string
+          category_id?: string | null
           client?: string | null
           completion_date?: string | null
           cover_image?: string | null
@@ -107,6 +144,35 @@ export type Database = {
           title?: string
           updated_at?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "projects_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
         Relationships: []
       }
     }
@@ -114,10 +180,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -244,6 +316,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
