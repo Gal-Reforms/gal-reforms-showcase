@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Upload, Image as ImageIcon, Trash2, X } from 'lucide-react';
 import { useUploadCoverImage, useSetProjectCoverImage } from '@/hooks/useProjectImageDetails';
 import { ProjectImage } from '@/hooks/useProjects';
+import { t } from '@/lib/translations';
 
 interface CoverImageManagerProps {
   projectId: string;
@@ -43,7 +44,7 @@ export function CoverImageManager({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Imagem de Capa</CardTitle>
+        <CardTitle>{t('coverImage')}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Current Cover Preview */}
@@ -51,7 +52,7 @@ export function CoverImageManager({
           <div className="relative">
             <img
               src={currentCoverImage}
-              alt="Capa do projeto"
+              alt="Portada del proyecto"
               className="w-full h-48 object-cover rounded-lg"
             />
             <Button
@@ -68,7 +69,7 @@ export function CoverImageManager({
           <div className="w-full h-48 bg-muted rounded-lg flex items-center justify-center">
             <div className="text-center">
               <ImageIcon className="h-12 w-12 mx-auto text-muted-foreground mb-2" />
-              <p className="text-sm text-muted-foreground">Nenhuma capa definida</p>
+              <p className="text-sm text-muted-foreground">No hay portada definida</p>
             </div>
           </div>
         )}
@@ -79,7 +80,7 @@ export function CoverImageManager({
             <Button variant="outline" asChild disabled={uploadCover.isPending}>
               <span>
                 <Upload className="h-4 w-4 mr-2" />
-                Enviar Nova Capa
+                Subir Nueva Portada
               </span>
             </Button>
           </Label>
@@ -96,12 +97,12 @@ export function CoverImageManager({
               <DialogTrigger asChild>
                 <Button variant="outline">
                   <ImageIcon className="h-4 w-4 mr-2" />
-                  Escolher da Galeria
+                  {t('chooseFromGallery')}
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
                 <DialogHeader>
-                  <DialogTitle>Escolher Imagem da Galeria</DialogTitle>
+                  <DialogTitle>{t('chooseFromGallery')}</DialogTitle>
                 </DialogHeader>
                 <div className="grid grid-cols-3 gap-4">
                   {galleryImages.map((image) => (
@@ -113,7 +114,7 @@ export function CoverImageManager({
                       <CardContent className="p-2">
                         <img
                           src={image.image_url}
-                          alt={image.caption || 'Imagem da galeria'}
+                          alt={image.caption || 'Imagen de la galería'}
                           className="w-full aspect-square object-cover rounded"
                         />
                         {image.caption && (
@@ -136,7 +137,7 @@ export function CoverImageManager({
               disabled={setCover.isPending}
             >
               <Trash2 className="h-4 w-4 mr-2" />
-              Remover Capa
+              {t('removeCover')}
             </Button>
           )}
         </div>

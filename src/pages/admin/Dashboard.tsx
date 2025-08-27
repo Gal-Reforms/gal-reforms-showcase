@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Plus, FolderOpen, Tags, Eye, EyeOff } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { formatDate } from '@/lib/dateUtils';
+import { t } from '@/lib/translations';
 
 export default function Dashboard() {
   const { data: projects, isLoading: projectsLoading } = useAdminProjects();
@@ -16,18 +18,18 @@ export default function Dashboard() {
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <h1 className="text-3xl font-bold">{t('dashboard')}</h1>
         <div className="flex gap-2">
           <Button asChild>
             <Link to="/admin/projects/new">
               <Plus className="h-4 w-4 mr-2" />
-              Novo Projeto
+              {t('newProject')}
             </Link>
           </Button>
           <Button variant="outline" asChild>
             <Link to="/admin/categories">
               <Tags className="h-4 w-4 mr-2" />
-              Categorias
+              {t('categories')}
             </Link>
           </Button>
         </div>
@@ -37,7 +39,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total de Projetos</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('totalProjects')}</CardTitle>
             <FolderOpen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -51,7 +53,7 @@ export default function Dashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Projetos Publicados</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('publishedProjects')}</CardTitle>
             <Eye className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -65,7 +67,7 @@ export default function Dashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Rascunhos</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('drafts')}</CardTitle>
             <EyeOff className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -79,7 +81,7 @@ export default function Dashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Categorias</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('categories')}</CardTitle>
             <Tags className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -95,7 +97,7 @@ export default function Dashboard() {
       {/* Recent Projects */}
       <Card>
         <CardHeader>
-          <CardTitle>Projetos Recentes</CardTitle>
+          <CardTitle>{t('recentProjects')}</CardTitle>
         </CardHeader>
         <CardContent>
           {projectsLoading ? (
@@ -131,13 +133,13 @@ export default function Dashboard() {
                         ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' 
                         : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
                     }`}>
-                      {project.published ? 'Publicado' : 'Rascunho'}
+                      {project.published ? t('published') : t('draft')}
                     </div>
-                    <Button variant="outline" size="sm" asChild>
-                      <Link to={`/admin/projects/${project.id}/edit`}>
-                        Editar
-                      </Link>
-                    </Button>
+                        <Button variant="outline" size="sm" asChild>
+                          <Link to={`/admin/projects/${project.id}/edit`}>
+                            {t('edit')}
+                          </Link>
+                        </Button>
                   </div>
                 </div>
               ))}
@@ -145,9 +147,9 @@ export default function Dashboard() {
           ) : (
             <div className="text-center py-8 text-muted-foreground">
               <FolderOpen className="h-12 w-12 mx-auto mb-4" />
-              <p>Nenhum projeto encontrado</p>
+              <p>{t('noProjectsFound')}</p>
               <Button className="mt-4" asChild>
-                <Link to="/admin/projects/new">Criar Primeiro Projeto</Link>
+                <Link to="/admin/projects/new">{t('createFirstProject')}</Link>
               </Button>
             </div>
           )}

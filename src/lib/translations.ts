@@ -22,7 +22,7 @@ export const translations = {
   // About section
   aboutTitle: 'Nosotros',
   aboutGalReforms: 'Gal Reforms',
-  aboutDescription: 'Transformamos espacios con excelencia técnica y diseño innovador. Más de 15 años creando hogares únicos en toda España.',
+  aboutDescription: 'Somos una empresa especializada en construcción y reformas con más de 15 años de experiencia en el mercado español. Nuestra misión es transformar espacios con calidad excepcional, diseño sofisticado y acabados impecables.',
   customProjects: 'Proyectos personalizados y únicos',
   qualityGuarantee: 'Garantía de calidad en todos los trabajos',
   personalizedService: 'Atención personalizada de principio a fin',
@@ -46,12 +46,12 @@ export const translations = {
   madrid: 'Madrid, España',
   hours: 'Horario',
   businessHours: 'Lun - Vie: 9h - 18h',
-  whatsappContact: 'Contáctanos por WhatsApp',
+  whatsappContact: 'WhatsApp',
   fullName: 'Nombre Completo',
   subject: 'Asunto',
   message: 'Mensaje',
   sendMessage: 'Enviar Mensaje',
-  messageSent: 'Mensaje enviado!',
+  messageSent: '¡Mensaje enviado!',
   messageSuccessDescription: 'Nos pondremos en contacto contigo pronto. ¡Gracias por tu interés!',
   
   // Footer
@@ -84,11 +84,19 @@ export const translations = {
   passwordMinLength: 'La contraseña debe tener al menos 6 caracteres',
   logout: 'Cerrar Sesión',
   
-  // Admin
+  // Admin Panel
   adminPanel: 'Panel Administrativo',
   dashboard: 'Dashboard',
   categories: 'Categorías',
   newProject: 'Nuevo Proyecto',
+  manageCategories: 'Gestionar Categorías',
+  manageProjects: 'Gestionar Proyectos',
+  newCategory: 'Nueva Categoría',
+  editCategory: 'Editar Categoría',
+  editProject: 'Editar Proyecto',
+  categoryInfo: 'Información de la Categoría',
+  projectInfo: 'Información Básica',
+  projectDetails: 'Detalles del Proyecto',
   
   // Forms
   name: 'Nombre',
@@ -103,6 +111,23 @@ export const translations = {
   delete: 'Eliminar',
   update: 'Actualizar',
   create: 'Crear',
+  
+  // Admin Dashboard
+  totalProjects: 'Total de Proyectos',
+  publishedProjects: 'Proyectos Publicados',
+  drafts: 'Borradores',
+  recentProjects: 'Proyectos Recientes',
+  createFirstProject: 'Crear Primer Proyecto',
+  
+  // Form Fields
+  nameRequired: 'El nombre es obligatorio',
+  titleRequired: 'El título es obligatorio',
+  categoryRequired: 'La categoría es obligatoria',
+  selectCategory: 'Selecciona una categoría',
+  categoryDescription: 'Descripción de la categoría (opcional)',
+  projectDescription: 'Descripción detallada del proyecto...',
+  clientName: 'Nombre del cliente',
+  publishProject: 'Publicar proyecto',
   
   // Project details
   budget: 'Presupuesto',
@@ -144,15 +169,35 @@ export const translations = {
   setCover: 'Establecer como Portada',
   moveLeft: 'Mover Izquierda',
   moveRight: 'Mover Derecha',
+  manageProjectImages: 'Gestionar Imágenes del Proyecto',
   
   // Categories
   deleteCategory: 'Eliminar categoría',
   deleteCategoryConfirm: '¿Estás seguro de que quieres eliminar la categoría "{name}"? Esta acción no se puede deshacer.',
+  searchCategories: 'Buscar categorías...',
+  noCategoriesFound: 'No se encontraron categorías',
+  noCategoriesCreated: 'Ninguna categoría creada',
+  usedInUrl: 'Usado en la URL',
   
   // Projects admin
   deleteProject: 'Eliminar proyecto',
   deleteProjectConfirm: '¿Estás seguro de que quieres eliminar el proyecto "{title}"? Esta acción no se puede deshacer y todas las imágenes del proyecto también serán eliminadas.',
-  createFirstProject: 'Crear Primer Proyecto',
+  searchProjects: 'Buscar proyectos...',
+  actions: 'Acciones',
+  status: 'Estado',
+  published: 'Publicado',
+  draft: 'Borrador',
+  
+  // Image management
+  uploadImages: 'Subir Imágenes',
+  dragDropImages: 'Arrastra y suelta archivos aquí, o haz clic para seleccionar',
+  supportedFormats: 'Formatos soportados: JPG, PNG, WebP (máx. 10MB)',
+  uploading: 'Subiendo...',
+  imageCaption: 'Leyenda de la imagen...',
+  galleryImages: 'Imágenes de Galería',
+  beforeImages: 'Imágenes de Antes',
+  afterImages: 'Imágenes de Después',
+  noImagesUploaded: 'No se han subido imágenes aún',
   
   // General
   loading: 'Cargando...',
@@ -163,6 +208,7 @@ export const translations = {
   
   // Validation
   slugExists: 'Este slug ya existe. Por favor, elige otro.',
+  slugInUse: 'Este slug ya está siendo usado por otro proyecto',
   
   // Privacy Policy
   privacyPolicyTitle: 'Política de Privacidad',

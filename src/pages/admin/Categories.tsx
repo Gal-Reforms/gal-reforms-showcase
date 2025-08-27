@@ -24,8 +24,9 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Link } from 'react-router-dom';
 import { Plus, Search, Edit, Trash2 } from 'lucide-react';
-import { format } from 'date-fns';
+import { formatDate } from '@/lib/dateUtils';
 import { Skeleton } from '@/components/ui/skeleton';
+import { t } from '@/lib/translations';
 
 export default function Categories() {
   const { data: categories, isLoading } = useCategories();
@@ -48,23 +49,23 @@ export default function Categories() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Categorias</h1>
+        <h1 className="text-3xl font-bold">{t('categories')}</h1>
         <Button asChild>
           <Link to="/admin/categories/new">
             <Plus className="h-4 w-4 mr-2" />
-            Nova Categoria
+            {t('newCategory')}
           </Link>
         </Button>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Gerenciar Categorias</CardTitle>
+          <CardTitle>{t('manageCategories')}</CardTitle>
           <div className="flex items-center space-x-2">
             <div className="relative">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Buscar categorias..."
+                placeholder={t('searchCategories')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-8"
@@ -85,18 +86,18 @@ export default function Categories() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Nome</TableHead>
+                  <TableHead>{t('name')}</TableHead>
                   <TableHead>Slug</TableHead>
-                  <TableHead>Descrição</TableHead>
-                  <TableHead>Criado em</TableHead>
-                  <TableHead className="w-[100px]">Ações</TableHead>
+                  <TableHead>{t('description')}</TableHead>
+                  <TableHead>Creado el</TableHead>
+                  <TableHead className="w-[100px]">{t('actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredCategories.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-                      {searchTerm ? 'Nenhuma categoria encontrada' : 'Nenhuma categoria criada'}
+                      {searchTerm ? t('noCategoriesFound') : t('noCategoriesCreated')}
                     </TableCell>
                   </TableRow>
                 ) : (
@@ -114,7 +115,7 @@ export default function Categories() {
                         )}
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground">
-                        {format(new Date(category.created_at), 'dd/MM/yyyy')}
+                        {formatDate(category.created_at)}
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center space-x-2">
@@ -131,18 +132,18 @@ export default function Categories() {
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                               <AlertDialogHeader>
-                                <AlertDialogTitle>Excluir categoria</AlertDialogTitle>
+                                <AlertDialogTitle>{t('deleteCategory')}</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  Tem certeza que deseja excluir a categoria "{category.name}"? Esta ação não pode ser desfeita.
+                                  {t('deleteCategoryConfirm').replace('{name}', category.name)}
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
-                                <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
                                 <AlertDialogAction
                                   onClick={() => handleDelete(category.id)}
                                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                                 >
-                                  Excluir
+                                  {t('delete')}
                                 </AlertDialogAction>
                               </AlertDialogFooter>
                             </AlertDialogContent>

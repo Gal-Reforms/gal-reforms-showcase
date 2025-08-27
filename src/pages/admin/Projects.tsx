@@ -25,8 +25,9 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
 import { Plus, Search, Edit, Trash2, Eye, ExternalLink } from 'lucide-react';
-import { format } from 'date-fns';
+import { formatDate } from '@/lib/dateUtils';
 import { Skeleton } from '@/components/ui/skeleton';
+import { t } from '@/lib/translations';
 
 export default function Projects() {
   const { data: projects, isLoading } = useAdminProjects();
@@ -50,23 +51,23 @@ export default function Projects() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Projetos</h1>
+        <h1 className="text-3xl font-bold">{t('projects')}</h1>
         <Button asChild>
           <Link to="/admin/projects/new">
             <Plus className="h-4 w-4 mr-2" />
-            Novo Projeto
+            {t('newProject')}
           </Link>
         </Button>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Gerenciar Projetos</CardTitle>
+          <CardTitle>{t('manageProjects')}</CardTitle>
           <div className="flex items-center space-x-2">
             <div className="relative">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Buscar projetos..."
+                placeholder={t('searchProjects')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-8"
@@ -87,19 +88,19 @@ export default function Projects() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Título</TableHead>
-                  <TableHead>Categoria</TableHead>
-                  <TableHead>Localização</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Criado em</TableHead>
-                  <TableHead className="w-[150px]">Ações</TableHead>
+                  <TableHead>{t('title')}</TableHead>
+                  <TableHead>{t('category')}</TableHead>
+                  <TableHead>{t('location')}</TableHead>
+                  <TableHead>{t('status')}</TableHead>
+                  <TableHead>Creado el</TableHead>
+                  <TableHead className="w-[150px]">{t('actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredProjects.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                      {searchTerm ? 'Nenhum projeto encontrado' : 'Nenhum projeto criado'}
+                      {searchTerm ? t('noProjectsFound') : 'No se han creado proyectos'}
                     </TableCell>
                   </TableRow>
                 ) : (
@@ -120,11 +121,11 @@ export default function Projects() {
                           variant={project.published ? "default" : "secondary"}
                           className={project.published ? "bg-green-600" : "bg-yellow-600"}
                         >
-                          {project.published ? 'Publicado' : 'Rascunho'}
+                          {project.published ? t('published') : t('draft')}
                         </Badge>
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground">
-                        {format(new Date(project.created_at), 'dd/MM/yyyy')}
+                        {formatDate(project.created_at)}
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center space-x-1">

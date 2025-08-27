@@ -22,12 +22,13 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
+import { t } from "@/lib/translations";
 
 const adminNavItems = [
-  { title: "Dashboard", url: "/admin", icon: LayoutDashboard, end: true },
-  { title: "Projetos", url: "/admin/projects", icon: FolderOpen },
-  { title: "Novo Projeto", url: "/admin/projects/new", icon: Plus },
-  { title: "Categorias", url: "/admin/categories", icon: Tags },
+  { title: t('dashboard'), url: "/admin", icon: LayoutDashboard, end: true },
+  { title: t('projects'), url: "/admin/projects", icon: FolderOpen },
+  { title: t('newProject'), url: "/admin/projects/new", icon: Plus },
+  { title: t('categories'), url: "/admin/categories", icon: Tags },
 ];
 
 export function AdminSidebar() {
@@ -58,7 +59,7 @@ export function AdminSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="text-lg font-bold px-4 py-2">
-            {!isCollapsed && "Admin Panel"}
+            {!isCollapsed && t('adminPanel')}
           </SidebarGroupLabel>
           
           <SidebarGroupContent>
@@ -70,7 +71,7 @@ export function AdminSidebar() {
                     className="flex items-center gap-2 px-3 py-2 rounded-md text-sm hover:bg-accent"
                   >
                     <Home className="h-4 w-4" />
-                    {!isCollapsed && <span>Ver Site</span>}
+                    {!isCollapsed && <span>Ver Sitio Web</span>}
                   </NavLink>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -101,7 +102,7 @@ export function AdminSidebar() {
             className="w-full"
           >
             <LogOut className="h-4 w-4" />
-            {!isCollapsed && <span className="ml-2">Sair</span>}
+            {!isCollapsed && <span className="ml-2">{t('logout')}</span>}
           </Button>
         </div>
       </SidebarContent>
