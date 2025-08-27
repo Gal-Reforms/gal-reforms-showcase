@@ -50,7 +50,7 @@ export const useUploadProjectImage = () => {
           order_index: orderIndex,
         }])
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) {
         throw error;

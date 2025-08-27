@@ -51,8 +51,8 @@ export const useCreateContentBlock = () => {
       const { data: result, error } = await supabase
         .from('project_content_blocks')
         .insert([data])
-        .select()
-        .single();
+         .select()
+         .maybeSingle();
 
       if (error) {
         throw error;

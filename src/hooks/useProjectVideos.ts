@@ -33,7 +33,7 @@ export const useCreateProjectVideo = () => {
         .from('project_videos')
         .insert([data])
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) {
         throw error;
@@ -171,7 +171,7 @@ export const useUploadProjectVideo = () => {
           order_index: orderIndex,
         }])
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) {
         throw error;
