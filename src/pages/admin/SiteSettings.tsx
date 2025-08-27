@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForm, useFieldArray, FieldArrayWithId } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
@@ -34,7 +34,7 @@ const SiteSettings = () => {
   const { data: settings, isLoading } = useSiteSettings();
   const updateSettings = useUpdateSiteSettings();
 
-  const methods = useForm<SiteSettingsFormData>({
+  const form = useForm<SiteSettingsFormData>({
     resolver: zodResolver(siteSettingsSchema),
     defaultValues: {
       company_description: '',
@@ -54,17 +54,7 @@ const SiteSettings = () => {
     }
   });
 
-  const { register, handleSubmit, control, formState: { errors }, reset } = methods;
-
-  const servicesFieldArray = useFieldArray({
-    control,
-    name: 'services_list'
-  });
-
-  const linksFieldArray = useFieldArray({
-    control,
-    name: 'quick_links_list'
-  });
+  const { register, handleSubmit, control, formState: { errors }, reset } = form;
 
   // Reset form when settings are loaded
   React.useEffect(() => {
@@ -136,9 +126,7 @@ const SiteSettings = () => {
         <Card>
           <CardHeader>
             <CardTitle>Informações de Contato</CardTitle>
-            <CardDescription>
-              Configure os dados de contato da empresa
-            </CardDescription>
+            <CardDescription>Configure os dados de contato da empresa</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -217,9 +205,7 @@ const SiteSettings = () => {
         <Card>
           <CardHeader>
             <CardTitle>Redes Sociais</CardTitle>
-            <CardDescription>
-              Configure os links das redes sociais
-            </CardDescription>
+            <CardDescription>Configure os links das redes sociais</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -264,9 +250,7 @@ const SiteSettings = () => {
         <Card>
           <CardHeader>
             <CardTitle>Páginas Legais</CardTitle>
-            <CardDescription>
-              Configure os links para páginas legais
-            </CardDescription>
+            <CardDescription>Configure os links para páginas legais</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -296,83 +280,8 @@ const SiteSettings = () => {
           </CardContent>
         </Card>
 
-        {/* Services List */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Lista de Serviços</CardTitle>
-            <CardDescription>Configure os serviços que aparecerão no rodapé</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {servicesFieldArray.fields.map((field, index) => (
-                <div key={field.id} className="flex gap-2">
-                  <Input
-                    {...register(`services_list.${index}` as const)}
-                    placeholder="Nome do serviço"
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    onClick={() => servicesFieldArray.remove(index)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => servicesFieldArray.append('')}
-                className="w-full"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Adicionar Serviço
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Quick Links */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Links Rápidos</CardTitle>
-            <CardDescription>Configure os links rápidos que aparecerão no rodapé</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {linksFieldArray.fields.map((field, index) => (
-                <div key={field.id} className="flex gap-2">
-                  <Input
-                    {...register(`quick_links_list.${index}.name` as const)}
-                    placeholder="Nome do link"
-                  />
-                  <Input
-                    {...register(`quick_links_list.${index}.href` as const)}
-                    placeholder="#secao ou /pagina"
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    onClick={() => linksFieldArray.remove(index)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => linksFieldArray.append({ name: '', href: '' })}
-                className="w-full"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Adicionar Link
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        <ServicesSection control={control} register={register} errors={errors} />
+        <QuickLinksSection control={control} register={register} errors={errors} />
 
         <div className="flex justify-end">
           <Button type="submit" disabled={updateSettings.isPending}>
@@ -388,6 +297,102 @@ const SiteSettings = () => {
         </div>
       </form>
     </div>
+  );
+};
+
+// Services Section Component
+const ServicesSection = ({ control, register, errors }: any) => {
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'services_list'
+  });
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Lista de Serviços</CardTitle>
+        <CardDescription>Configure os serviços que aparecerão no rodapé</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          {fields.map((field, index) => (
+            <div key={field.id} className="flex gap-2">
+              <Input
+                {...register(`services_list.${index}`)}
+                placeholder="Nome do serviço"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={() => remove(index)}
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+          ))}
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => append('')}
+            className="w-full"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Adicionar Serviço
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+// Quick Links Section Component  
+const QuickLinksSection = ({ control, register, errors }: any) => {
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'quick_links_list'
+  });
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Links Rápidos</CardTitle>
+        <CardDescription>Configure os links rápidos que aparecerão no rodapé</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          {fields.map((field, index) => (
+            <div key={field.id} className="flex gap-2">
+              <Input
+                {...register(`quick_links_list.${index}.name`)}
+                placeholder="Nome do link"
+              />
+              <Input
+                {...register(`quick_links_list.${index}.href`)}
+                placeholder="#secao ou /pagina"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={() => remove(index)}
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+          ))}
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => append({ name: '', href: '' })}
+            className="w-full"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Adicionar Link
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
