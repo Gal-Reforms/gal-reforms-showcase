@@ -10,57 +10,15 @@ import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { useStaggeredReveal } from "@/hooks/useScrollReveal";
 import { t } from "@/lib/translations";
 
-// Fallback project data for when Supabase is empty
-const fallbackProjects = [
-  {
-    id: "fallback-1",
-    title: "Reforma Completa - Apartamento Moderno",
-    slug: "reforma-apartamento-moderno-fallback",
-    category: "Reforma Residencial",
-    location: "Barcelona, Espanha",
-    description: "Transformação completa de apartamento de 120m² com design contemporâneo, utilizando materiais premium e acabamentos de luxo.",
-    cover_image: "/src/assets/project-1.jpg",
-    completion_date: "2024-01-15",
-    client: "Família Rodriguez",
-    budget_range: "€80.000 - €100.000",
-    features: ["Cozinha integrada", "Banheiro com banheira", "Closet personalizado", "Iluminação LED"],
-    materials: { pisos: "Parquet de carvalho", cozinha: "Mármore Carrara", banheiros: "Porcelanato importado" },
-    images: [],
-    beforeImages: [],
-    afterImages: [],
-    galleryImages: [
-      { id: "g1", image_url: "/src/assets/project-1.jpg", image_type: "gallery" as const, order_index: 1, caption: "Vista geral do projeto" }
-    ]
-  },
-  {
-    id: "fallback-2", 
-    title: "Construção Nova - Casa Mediterrânea",
-    slug: "construcao-casa-mediterranea-fallback",
-    category: "Construção Nova",
-    location: "Costa Brava, Espanha",
-    description: "Casa de luxo com 300m² inspirada na arquitetura mediterrânea, com piscina infinita e vista para o mar.",
-    cover_image: "/src/assets/project-2.jpg",
-    completion_date: "2023-11-20",
-    client: "Sr. Martinez", 
-    budget_range: "€300.000 - €400.000",
-    features: ["Piscina infinita", "Terraço panorâmico", "Garagem dupla", "Sistema domótica"],
-    materials: { exterior: "Pedra natural", interior: "Mármore travertino", cobertura: "Telha cerâmica" },
-    images: [],
-    beforeImages: [],
-    afterImages: [],
-    galleryImages: [
-      { id: "g2", image_url: "/src/assets/project-2.jpg", image_type: "gallery" as const, order_index: 1, caption: "Fachada principal" }
-    ]
-  }
-] as Project[];
+// Using only real projects from database
 
 const Projects = () => {
   const [selectedCategory, setSelectedCategory] = useState("Todos");
   const navigate = useNavigate();
   const { data: supabaseProjects, isLoading, error } = useProjects();
 
-  // Use Supabase projects if available, otherwise fallback
-  const projects = (supabaseProjects && supabaseProjects.length > 0) ? supabaseProjects : fallbackProjects;
+  // Use only real projects from database
+  const projects = supabaseProjects || [];
 
   const categories = ["Todos", "Reforma Residencial", "Construção Nova", "Reforma Comercial"];
   
@@ -199,9 +157,33 @@ const Projects = () => {
 
         {/* Empty State */}
         {!isLoading && filteredProjects.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">{t('noProjectsFound')}</p>
-          </div>
+          <AnimatedSection animation="fade-in-up">
+            <div className="text-center py-16">
+              <div className="mb-6">
+                <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Wrench className="w-10 h-10 text-muted-foreground" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-2">
+                  Nenhum projeto encontrado
+                </h3>
+                <p className="text-muted-foreground mb-6">
+                  {selectedCategory === "Todos" 
+                    ? "Ainda não há projetos criados. Entre na área administrativa para criar seu primeiro projeto." 
+                    : `Não há projetos na categoria "${selectedCategory}". Tente selecionar outra categoria.`}
+                </p>
+                {selectedCategory === "Todos" && (
+                  <Button 
+                    variant="outline" 
+                    onClick={scrollToContact}
+                    className="hover-glow"
+                  >
+                    <Wrench className="w-4 h-4 mr-2" />
+                    Entrar em Contato
+                  </Button>
+                )}
+              </div>
+            </div>
+          </AnimatedSection>
         )}
 
         {/* Call to Action */}
