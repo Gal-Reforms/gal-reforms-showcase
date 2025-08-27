@@ -124,11 +124,21 @@ const Projects = () => {
           </div>
         )}
 
-        {/* Error State */}
+        {/* Error State with better error handling */}
         {error && !isLoading && (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground mb-4">{t('errorLoadingProjects')}</p>
-          </div>
+          <AnimatedSection animation="fade-in-up">
+            <div className="text-center py-12">
+              <div className="mb-4">
+                <AlertCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-foreground mb-2">
+                  Error al cargar proyectos de la base de datos
+                </h3>
+                <p className="text-muted-foreground mb-4">
+                  Mostrando proyectos de ejemplo mientras solucionamos el problema.
+                </p>
+              </div>
+            </div>
+          </AnimatedSection>
         )}
 
         {/* Projects Grid */}

@@ -43,7 +43,7 @@ export const useProjects = () => {
         .from('projects')
         .select(`
           *,
-          project_images (*)
+          project_images!project_images_project_id_fkey (*)
         `)
         .eq('published', true)
         .order('created_at', { ascending: false });
