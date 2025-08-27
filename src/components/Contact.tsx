@@ -13,8 +13,10 @@ import { useValidation, ValidationSchemas } from "@/lib/validation";
 import { useFormSubmit } from "@/hooks/useAsync";
 import { ErrorHandler } from "@/lib/errors";
 import { ContactFormData } from "@/lib/types";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const Contact = () => {
+  const { data: settings } = useSiteSettings();
   const [formData, setFormData] = useState<ContactFormData>({
     name: "",
     email: "",
@@ -76,26 +78,26 @@ const Contact = () => {
     {
       icon: Phone,
       title: t('phone'),
-      content: "+34 XXX XXX XXX",
+      content: settings?.phone_number || "+34 XXX XXX XXX",
       description: "Llámanos"
     },
     {
       icon: Mail,
       title: t('email'),
-      content: "contacto@galreforms.com",
+      content: settings?.email || "contacto@galreforms.com",
       description: t('sendEmail')
     },
     {
       icon: MapPin,
       title: t('location'),
-      content: t('madrid'),
+      content: settings?.address || t('madrid'),
       description: "Atendemos toda la región"
     },
     {
       icon: Clock,
       title: t('hours'),
-      content: t('businessHours'),
-      description: "Sáb: 9h - 14h"
+      content: settings?.working_hours_weekdays || t('businessHours'),
+      description: settings?.working_hours_saturday || "Sáb: 9h - 14h"
     }
   ];
 
@@ -159,7 +161,11 @@ const Contact = () => {
                   </p>
                   <Button 
                     className="w-full bg-[#25D366] hover:bg-[#25D366]/90 text-white hover-glow transition-all duration-300"
-                    onClick={() => window.open(`https://wa.me/34XXXXXXXXX?text=${encodeURIComponent(t('whatsappMessage'))}`, '_blank')}
+                    onClick={() => {
+                      const phoneNumber = settings?.whatsapp_number || "34XXXXXXXXX";
+                      const cleanPhoneNumber = phoneNumber.replace(/[\s\-\(\)\+]/g, '');
+                      window.open(`https://wa.me/${cleanPhoneNumber}?text=${encodeURIComponent(t('whatsappMessage'))}`, '_blank');
+                    }}
                   >
                     Llamar por WhatsApp
                   </Button>

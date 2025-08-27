@@ -43,6 +43,8 @@ export const useSiteSettings = () => {
   return useQuery({
     queryKey: ['siteSettings'],
     queryFn: async () => {
+      console.log('🔍 Buscando configurações do site...');
+      
       const { data, error } = await supabase
         .from('site_settings')
         .select('*')
@@ -50,13 +52,17 @@ export const useSiteSettings = () => {
         .single();
 
       if (error) {
-        console.error('Error fetching site settings:', error);
+        console.error('❌ Erro ao buscar configurações:', error);
         throw error;
       }
 
+      console.log('✅ Configurações carregadas:', data);
       return data as SiteSettings;
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 0, // Sempre buscar dados frescos
+    refetchOnWindowFocus: true, // Recarregar quando a janela ganhar foco
+    refetchOnMount: true, // Recarregar sempre que o componente for montado
+    refetchOnReconnect: true, // Recarregar quando reconectar à internet
   });
 };
 
@@ -65,6 +71,8 @@ export const useUpdateSiteSettings = () => {
 
   return useMutation({
     mutationFn: async (settings: Partial<SiteSettingsFormData>) => {
+      console.log('🔍 Tentando atualizar configurações:', settings);
+      
       const { data, error } = await supabase
         .from('site_settings')
         .update(settings)
@@ -73,19 +81,41 @@ export const useUpdateSiteSettings = () => {
         .single();
 
       if (error) {
-        console.error('Error updating site settings:', error);
+        console.error('❌ Erro ao atualizar configurações:', error);
         throw error;
       }
 
+      console.log('✅ Configurações atualizadas com sucesso:', data);
       return data as SiteSettings;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log('🎯 Cache sendo atualizado com:', data);
+      
+      // Invalidar e atualizar o cache imediatamente
       queryClient.invalidateQueries({ queryKey: ['siteSettings'] });
+      
+      // Também atualizar o cache diretamente para atualização imediata
+      queryClient.setQueryData(['siteSettings'], data);
+      
+      // Verificar se o cache foi atualizado
+      const cachedData = queryClient.getQueryData(['siteSettings']);
+      console.log('🔍 Cache após atualização:', cachedData);
+      
+      // Forçar recarregamento de todos os componentes que usam essas configurações
+      queryClient.refetchQueries({ queryKey: ['siteSettings'] });
+      
       toast.success('Configurações atualizadas com sucesso!');
     },
     onError: (error) => {
-      console.error('Error updating site settings:', error);
-      toast.error('Erro ao atualizar configurações');
+      console.error('❌ Erro na mutação:', error);
+      toast.error(`Erro ao atualizar configurações: ${error.message}`);
     },
   });
+};
+
+// Função para forçar atualização das configurações
+export const refreshSiteSettings = (queryClient: any) => {
+  console.log('🔄 Forçando atualização das configurações...');
+  queryClient.invalidateQueries({ queryKey: ['siteSettings'] });
+  queryClient.refetchQueries({ queryKey: ['siteSettings'] });
 };

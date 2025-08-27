@@ -17,7 +17,7 @@ export const ProjectCard = ({ project, index, isVisible }: ProjectCardProps) => 
   const navigate = useNavigate();
 
   const viewProjectDetails = () => {
-    navigate(`/projeto/${project.slug}`);
+    navigate(`/proyecto/${project.slug}`);
   };
 
   return (

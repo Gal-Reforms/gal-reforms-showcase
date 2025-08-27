@@ -15,7 +15,8 @@ import {
   MessageCircle,
   Clock,
   CheckCircle,
-  Loader2
+  Loader2,
+  VolumeX
 } from "lucide-react";
 import { useProject } from "@/hooks/useProject";
 import { useContentBlocks } from "@/hooks/useContentBlocks";
@@ -34,6 +35,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useSEO } from "@/hooks/useSEO";
 import { ProjectSchema, BreadcrumbSchema } from "@/components/seo/StructuredData";
 import { OptimizedImage } from "@/components/seo/ImageOptimizer";
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 const ProjectDetails = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -41,6 +43,7 @@ const ProjectDetails = () => {
   const { data: contentBlocks } = useContentBlocks(project?.id || '');
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { data: settings } = useSiteSettings();
 
   // SEO optimization
   useSEO({
@@ -121,7 +124,12 @@ const ProjectDetails = () => {
   const openWhatsApp = () => {
     const message = `Hola! Estoy interesado en conocer más sobre el proyecto "${project.title}". ¿Podrían brindarme más información?`;
     const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/34612345678?text=${encodedMessage}`, '_blank');
+    
+    // Usar o número configurado no painel admin
+    const phoneNumber = settings?.whatsapp_number || "34612345678";
+    const cleanPhoneNumber = phoneNumber.replace(/[\s\-\(\)\+]/g, '');
+    
+    window.open(`https://wa.me/${cleanPhoneNumber}?text=${encodedMessage}`, '_blank');
   };
 
   // Breadcrumb data for structured data
@@ -265,7 +273,8 @@ const ProjectDetails = () => {
                                 src={video.video_url}
                                 className="w-full h-full object-cover"
                                 controls
-                                poster={video.thumbnail_url}
+                                muted={video.muted || false}
+                                title={video.title || 'Vídeo do projeto'}
                               />
                             ) : (
                               <iframe
@@ -274,12 +283,21 @@ const ProjectDetails = () => {
                                 frameBorder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen
+                                title={video.title || 'Vídeo do projeto'}
                               />
                             )}
                           </div>
-                          {video.title && (
-                            <h3 className="text-lg font-semibold">{video.title}</h3>
-                          )}
+                          <div className="flex items-center gap-2">
+                            {video.title && (
+                              <h3 className="text-lg font-semibold">{video.title}</h3>
+                            )}
+                            {video.muted && (
+                              <Badge variant="secondary" className="text-xs">
+                                <VolumeX className="w-3 h-3 mr-1" />
+                                Sem som
+                              </Badge>
+                            )}
+                          </div>
                           {video.description && (
                             <p className="text-muted-foreground">{video.description}</p>
                           )}

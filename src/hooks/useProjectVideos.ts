@@ -6,22 +6,25 @@ export interface ProjectVideo {
   id: string;
   project_id: string;
   video_url: string;
+  video_type: 'youtube' | 'vimeo' | 'upload';
   title?: string;
   description?: string;
   thumbnail_url?: string;
-  video_type: 'youtube' | 'vimeo' | 'upload';
   order_index: number;
+  muted?: boolean;
   created_at: string;
+  updated_at: string;
 }
 
 export interface CreateProjectVideoData {
   project_id: string;
   video_url: string;
+  video_type: 'youtube' | 'vimeo' | 'upload';
   title?: string;
   description?: string;
   thumbnail_url?: string;
-  video_type: 'youtube' | 'vimeo' | 'upload';
   order_index: number;
+  muted?: boolean;
 }
 
 export const useCreateProjectVideo = () => {
@@ -57,35 +60,19 @@ export const useUpdateProjectVideo = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: async ({ 
-      videoId, 
-      title, 
-      description,
-      orderIndex 
-    }: {
-      videoId: string;
-      title?: string;
-      description?: string;
-      orderIndex?: number;
-    }) => {
-      const updateData: any = {};
-      
-      if (title !== undefined) updateData.title = title;
-      if (description !== undefined) updateData.description = description;
-      if (orderIndex !== undefined) updateData.order_index = orderIndex;
-
-      const { data, error } = await supabase
+    mutationFn: async ({ id, ...updates }: Partial<CreateProjectVideoData> & { id: string }) => {
+      const { data: video, error } = await supabase
         .from('project_videos')
-        .update(updateData)
-        .eq('id', videoId)
+        .update(updates)
+        .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) {
         throw error;
       }
 
-      return data;
+      return video;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-projects'] });
@@ -103,11 +90,11 @@ export const useDeleteProjectVideo = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: async (videoId: string) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase
         .from('project_videos')
         .delete()
-        .eq('id', videoId);
+        .eq('id', id);
 
       if (error) {
         throw error;
@@ -117,10 +104,10 @@ export const useDeleteProjectVideo = () => {
       queryClient.invalidateQueries({ queryKey: ['admin-projects'] });
       queryClient.invalidateQueries({ queryKey: ['projects'] });
       queryClient.invalidateQueries({ queryKey: ['admin-project'] });
-      toast.success('Vídeo excluído com sucesso!');
+      toast.success('Vídeo removido com sucesso!');
     },
     onError: (error: any) => {
-      toast.error(error.message || 'Erro ao excluir vídeo');
+      toast.error(error.message || 'Erro ao remover vídeo');
     },
   });
 };

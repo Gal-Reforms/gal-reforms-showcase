@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Trash2, Youtube, Video, Upload, Play } from 'lucide-react';
+import { Plus, Trash2, Youtube, Video, Upload, Play, VolumeX, Volume2 } from 'lucide-react';
 import { ProjectVideo, useCreateProjectVideo, useDeleteProjectVideo, useUpdateProjectVideo, useUploadProjectVideo } from '@/hooks/useProjectVideos';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from 'sonner';
@@ -24,6 +24,7 @@ export const VideoManager = ({ projectId, videos, onVideosChange, isTemporary = 
   const [videoTitle, setVideoTitle] = useState('');
   const [videoDescription, setVideoDescription] = useState('');
   const [videoType, setVideoType] = useState<'youtube' | 'vimeo' | 'upload'>('youtube');
+  const [videoMuted, setVideoMuted] = useState(false);
   const [uploadFile, setUploadFile] = useState<File | null>(null);
 
   const createVideo = useCreateProjectVideo();
@@ -42,6 +43,10 @@ export const VideoManager = ({ projectId, videos, onVideosChange, isTemporary = 
       default:
         return <Play className="w-4 h-4" />;
     }
+  };
+
+  const getMutedIcon = (muted: boolean) => {
+    return muted ? <VolumeX className="w-4 h-4 text-muted-foreground" /> : <Volume2 className="w-4 h-4 text-muted-foreground" />;
   };
 
   const extractVideoId = (url: string, type: 'youtube' | 'vimeo') => {
@@ -106,6 +111,7 @@ export const VideoManager = ({ projectId, videos, onVideosChange, isTemporary = 
           description: videoDescription || undefined,
           video_type: videoType,
           order_index: videos.length,
+          muted: videoMuted,
         });
         resetForm();
         onVideosChange?.();
@@ -120,6 +126,7 @@ export const VideoManager = ({ projectId, videos, onVideosChange, isTemporary = 
     setVideoTitle('');
     setVideoDescription('');
     setVideoType('youtube');
+    setVideoMuted(false);
     setUploadFile(null);
     setIsAddingVideo(false);
   };
@@ -139,7 +146,7 @@ export const VideoManager = ({ projectId, videos, onVideosChange, isTemporary = 
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>Vídeos do Projeto</span>
-          <Button onClick={() => setIsAddingVideo(true)} size="sm">
+          <Button type="button" onClick={() => setIsAddingVideo(true)} size="sm">
             <Plus className="w-4 h-4 mr-2" />
             Adicionar Vídeo
           </Button>
@@ -160,12 +167,19 @@ export const VideoManager = ({ projectId, videos, onVideosChange, isTemporary = 
                     <Badge variant="outline" className="text-xs">
                       {video.video_type}
                     </Badge>
+                    {getMutedIcon(video.muted || false)}
+                    {video.muted && (
+                      <Badge variant="secondary" className="text-xs">
+                        Sem som
+                      </Badge>
+                    )}
                   </div>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => handleDeleteVideo(video.id)}
                     className="text-destructive hover:text-destructive"
+                    type="button"
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
@@ -179,6 +193,7 @@ export const VideoManager = ({ projectId, videos, onVideosChange, isTemporary = 
                       frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
+                      title={video.title || 'Vídeo'}
                     />
                   </div>
                 ) : (
@@ -187,6 +202,8 @@ export const VideoManager = ({ projectId, videos, onVideosChange, isTemporary = 
                       src={video.video_url}
                       className="w-full h-full object-cover"
                       controls
+                      muted={video.muted || false}
+                      title={video.title || 'Vídeo'}
                     />
                   </div>
                 )}
@@ -265,11 +282,25 @@ export const VideoManager = ({ projectId, videos, onVideosChange, isTemporary = 
                 />
               </div>
 
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="video-muted"
+                  checked={videoMuted}
+                  onChange={(e) => setVideoMuted(e.target.checked)}
+                  className="rounded border-gray-300"
+                />
+                <Label htmlFor="video-muted" className="text-sm">
+                  Reproduzir sem som
+                </Label>
+              </div>
+
               <div className="flex justify-end space-x-2">
-                <Button variant="outline" onClick={resetForm}>
+                <Button type="button" variant="outline" onClick={resetForm}>
                   Cancelar
                 </Button>
                 <Button 
+                  type="button"
                   onClick={handleAddVideo}
                   disabled={
                     createVideo.isPending || 

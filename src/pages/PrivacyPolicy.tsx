@@ -1,28 +1,28 @@
-import { useEffect } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
+import React from 'react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import WhatsAppButton from '@/components/WhatsAppButton';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 const PrivacyPolicy = () => {
-  useEffect(() => {
-    document.title = "Política de Privacidade - Gal Reforms";
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Política de privacidade da Gal Reforms. Saiba como protegemos seus dados pessoais e informações.');
-    }
-  }, []);
+  const { data: settings } = useSiteSettings();
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background">
       <Header />
-      <main className="pt-20">
-        <div className="container mx-auto px-4 lg:px-8 py-16">
+      <main className="pt-20 pb-16">
+        <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl font-serif font-bold text-foreground mb-8">
-              Política de Privacidade
-            </h1>
-            
-            <div className="prose prose-lg max-w-none space-y-8">
+            <div className="prose prose-lg max-w-none">
+              <h1 className="text-4xl font-serif font-bold text-foreground mb-8">
+                Política de Privacidade
+              </h1>
+              
+              <p className="text-foreground/80 leading-relaxed mb-8">
+                Esta Política de Privacidade descreve como a Gal Reforms S.L coleta, utiliza e protege 
+                suas informações pessoais quando você utiliza nossos serviços ou visita nosso site.
+              </p>
+
               <section>
                 <h2 className="text-2xl font-serif font-semibold text-foreground mb-4">
                   1. Informações que Coletamos
@@ -99,8 +99,8 @@ const PrivacyPolicy = () => {
                 </h2>
                 <p className="text-foreground/80 leading-relaxed">
                   Para exercer seus direitos ou esclarecer dúvidas sobre esta política, 
-                  entre em contato conosco através do email: contato@galreforms.com ou 
-                  telefone: +34 XXX XXX XXX.
+                  entre em contato conosco através do email: {settings?.email || 'contato@galreforms.com'} ou 
+                  telefone: {settings?.phone_number || '+34 XXX XXX XXX'}.
                 </p>
               </section>
 

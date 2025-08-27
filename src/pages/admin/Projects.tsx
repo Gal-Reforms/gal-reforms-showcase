@@ -131,7 +131,7 @@ export default function Projects() {
                         <div className="flex items-center space-x-1">
                           {project.published && (
                             <Button variant="outline" size="icon" asChild title="Ver no site">
-                              <Link to={`/projeto/${project.slug}`} target="_blank">
+                              <Link to={`/proyecto/${project.slug}`} target="_blank">
                                 <ExternalLink className="h-4 w-4" />
                               </Link>
                             </Button>

@@ -1,4 +1,6 @@
+import React from 'react';
 import { useEffect } from 'react';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 interface StructuredDataProps {
   data: any;
@@ -34,24 +36,26 @@ export const StructuredData = ({ data, id = 'structured-data' }: StructuredDataP
 
 // Organization Schema
 export const OrganizationSchema = () => {
+  const { data: settings } = useSiteSettings();
+  
   const organizationData = {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Gal Reforms S.L",
-    "description": "Empresa especializada en construcción y reformas con más de 15 años de experiencia. Calidad premium, diseño sofisticado y acabados impecables en Madrid y región.",
+    "description": settings?.company_description || "Empresa especializada en construcción y reformas con más de 15 años de experiencia. Calidad premium, diseño sofisticado y acabados impecables en Madrid y región.",
     "url": window.location.origin,
     "logo": `${window.location.origin}/lovable-uploads/716cbf54-69ef-47e4-95a7-ec95811b8e9c.png`,
     "image": `${window.location.origin}/lovable-uploads/716cbf54-69ef-47e4-95a7-ec95811b8e9c.png`,
-    "telephone": "+34612345678",
+    "telephone": settings?.phone_number || "+34612345678",
     "address": {
       "@type": "PostalAddress",
       "addressCountry": "ES",
       "addressRegion": "Madrid",
-      "addressLocality": "Madrid"
+      "addressLocality": settings?.address || "Madrid"
     },
     "areaServed": {
       "@type": "Place",
-      "name": "Madrid, España"
+      "name": settings?.address || "Madrid, España"
     },
     "founder": {
       "@type": "Person",
@@ -60,9 +64,10 @@ export const OrganizationSchema = () => {
     "foundingDate": "2009",
     "numberOfEmployees": "10-50",
     "sameAs": [
-      "https://www.instagram.com/galreforms",
-      "https://www.facebook.com/galreforms"
-    ],
+      settings?.facebook_url || "https://www.facebook.com/galreforms",
+      settings?.instagram_url || "https://www.instagram.com/galreforms",
+      settings?.linkedin_url || "https://www.linkedin.com/company/galreforms"
+    ].filter(Boolean), // Remove undefined values
     "serviceType": [
       "Construcción",
       "Reformas",

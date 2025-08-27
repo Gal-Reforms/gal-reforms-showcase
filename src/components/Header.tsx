@@ -1,16 +1,17 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Menu, X, Phone, Mail, User } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
-import { ThemeToggle } from "@/components/theme/ThemeToggle";
-import { t } from "@/lib/translations";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Phone, Menu, X } from 'lucide-react';
+import { t } from '@/lib/translations';
+import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
+
 const Header = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, isAdmin } = useAuth();
+  const { data: settings } = useSiteSettings();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -63,7 +64,7 @@ const Header = () => {
           <div className="hidden lg:flex items-center space-x-4">
             <div className="flex items-center space-x-2 text-sm text-muted-foreground">
               <Phone size={16} />
-              <span>+34 XXX XXX XXX</span>
+              <span>{settings?.phone_number || "+34 XXX XXX XXX"}</span>
             </div>
             <ThemeToggle />
             <Button variant="default" className="bg-primary hover:bg-primary-dark text-primary-foreground shadow-gold" onClick={() => handleNavigation("contact")}>

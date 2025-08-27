@@ -7,6 +7,7 @@ import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { useAdminProject, useCreateProject, useUpdateProject, CreateProjectData } from '@/hooks/useAdminProjects';
 import { useCategories } from '@/hooks/useCategories';
 import { useCheckSlugUniqueness } from '@/hooks/useProjectImageDetails';
+import { useTempMediaManager } from '@/hooks/useTempMediaManager';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -28,6 +29,7 @@ import { useEffect, useState } from 'react';
 import { format, parseISO } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 const projectSchema = z.object({
   title: z.string().min(1, 'Título é obrigatório'),
@@ -42,9 +44,9 @@ const projectSchema = z.object({
   client: z.string().optional(),
   start_date: z.string().optional(),
   completion_date: z.string().optional(),
-  area_sqm: z.number().optional(),
-  bedrooms: z.number().optional(),
-  bathrooms: z.number().optional(),
+  area_sqm: z.preprocess((v) => (v === '' || v === null || Number.isNaN(v) ? undefined : v), z.number().optional()),
+  bedrooms: z.preprocess((v) => (v === '' || v === null || Number.isNaN(v) ? undefined : v), z.number().optional()),
+  bathrooms: z.preprocess((v) => (v === '' || v === null || Number.isNaN(v) ? undefined : v), z.number().optional()),
   budget_range: z.string().optional(),
   construction_type: z.string().optional(),
   materials: z.record(z.any()).optional(),
@@ -66,6 +68,7 @@ export default function ProjectFormTabs() {
   const { data: categories, isLoading: categoriesLoading } = useCategories();
   const createProject = useCreateProject();
   const updateProject = useUpdateProject();
+  const { associateWithProject, hasTempMedia } = useTempMediaManager();
 
   // For new projects, generate a proper UUID that won't be used in database operations
   const [tempProjectId] = useState(() => crypto.randomUUID());
@@ -219,7 +222,26 @@ export default function ProjectFormTabs() {
         navigate('/admin/projects');
       } else {
         const newProject = await createProject.mutateAsync(submitData);
-        // TODO: Handle temporary media association with the new project
+
+        // Reassociar blocos de conteúdo criados com o ID temporário
+        try {
+          await supabase
+            .from('project_content_blocks')
+            .update({ project_id: newProject.id })
+            .eq('project_id', currentProjectId);
+        } catch (e) {
+          console.error('Erro ao reassociar blocos de conteúdo:', e);
+        }
+
+        // Associar mídia temporária (imagens/vídeos) ao novo projeto
+        try {
+          if (hasTempMedia) {
+            await associateWithProject.mutateAsync(newProject.id);
+          }
+        } catch (e) {
+          console.error('Erro ao associar mídia temporária:', e);
+        }
+
         toast.success('Projeto criado com sucesso!');
         navigate(`/admin/projects/${newProject.id}/edit`);
       }

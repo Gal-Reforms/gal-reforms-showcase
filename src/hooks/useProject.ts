@@ -10,8 +10,8 @@ export const useProject = (slug: string) => {
         .from('projects')
         .select(`
           *,
-          project_images (*),
-          project_videos (*)
+          project_images!project_images_project_id_fkey (*),
+          project_videos!project_videos_project_id_fkey (*)
         `)
         .eq('slug', slug)
         .eq('published', true)
