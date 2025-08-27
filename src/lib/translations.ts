@@ -19,6 +19,14 @@ export const translations = {
   projectsCompleted: 'Proyectos Realizados',
   satisfactionGuaranteed: 'Satisfacción Garantizada',
   
+  // Hero slides
+  heroTitle1: 'Construcción de Excelencia',
+  heroSubtitle1: 'Transformamos sus sueños en realidad con calidad superior',
+  heroTitle2: 'Reformas Elegantes',
+  heroSubtitle2: 'Renovamos ambientes con diseño sofisticado y funcionalidad',
+  heroTitle3: 'Acabados Premium',
+  heroSubtitle3: 'Detalles que hacen la diferencia en cada proyecto',
+  
   // About section
   aboutTitle: 'Nosotros',
   aboutGalReforms: 'Gal Reforms',

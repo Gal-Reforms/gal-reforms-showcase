@@ -14,18 +14,18 @@ const Hero = () => {
   const slides = [
     {
       image: hero1,
-      title: "Construção de Excelência",
-      subtitle: "Transformamos seus sonhos em realidade com qualidade superior"
+      title: t('heroTitle1'),
+      subtitle: t('heroSubtitle1')
     },
     {
       image: hero2,
-      title: "Reformas Elegantes",
-      subtitle: "Renovamos ambientes com design sofisticado e funcionalidade"
+      title: t('heroTitle2'),
+      subtitle: t('heroSubtitle2')
     },
     {
       image: hero3,
-      title: "Acabamentos Premium",
-      subtitle: "Detalhes que fazem a diferença em cada projeto"
+      title: t('heroTitle3'),
+      subtitle: t('heroSubtitle3')
     }
   ];
 

@@ -37,6 +37,8 @@ export const useProjects = () => {
   return useQuery({
     queryKey: ['projects'],
     queryFn: async (): Promise<Project[]> => {
+      console.log('Fetching projects from Supabase...');
+      
       const { data: projects, error: projectsError } = await supabase
         .from('projects')
         .select(`
@@ -46,11 +48,19 @@ export const useProjects = () => {
         .eq('published', true)
         .order('created_at', { ascending: false });
 
+      console.log('Projects query result:', { projects, error: projectsError });
+
       if (projectsError) {
+        console.error('Projects query error:', projectsError);
         throw projectsError;
       }
 
-      return (projects || []).map(project => {
+      if (!projects || projects.length === 0) {
+        console.log('No projects found in database');
+        return [];
+      }
+
+      const mappedProjects = projects.map(project => {
         const images = (project.project_images || []) as ProjectImage[];
         
         return {
@@ -61,7 +71,14 @@ export const useProjects = () => {
           galleryImages: images.filter(img => img.image_type === 'gallery').sort((a, b) => a.order_index - b.order_index),
         };
       });
+
+      console.log('useProjects query successful:', mappedProjects.length, 'projects loaded');
+      return mappedProjects;
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: (failureCount, error) => {
+      console.log('Query retry attempt:', failureCount, error);
+      return failureCount < 2;
+    }
   });
 };

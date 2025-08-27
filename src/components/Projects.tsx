@@ -60,13 +60,20 @@ const Projects = () => {
   const { data: supabaseProjects, isLoading, error } = useProjects();
 
   // Use Supabase projects if available, otherwise fallback
-  const projects = supabaseProjects && supabaseProjects.length > 0 ? supabaseProjects : fallbackProjects;
+  const projects = (supabaseProjects && supabaseProjects.length > 0) ? supabaseProjects : fallbackProjects;
 
   const categories = ["Todos", "Reforma Residencial", "Construção Nova", "Reforma Comercial"];
   
   const filteredProjects = selectedCategory === "Todos" 
     ? projects 
-    : projects.filter(project => project.category === selectedCategory);
+    : projects.filter(project => {
+        // Handle both Spanish and Portuguese categories for compatibility
+        const categoryMatch = project.category === selectedCategory || 
+          (selectedCategory === "Reforma Residencial" && project.category === "Reforma Residencial") ||
+          (selectedCategory === "Construção Nova" && project.category === "Construção Nova") ||
+          (selectedCategory === "Reforma Comercial" && project.category === "Reforma Comercial");
+        return categoryMatch;
+      });
 
   const scrollToContact = () => {
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
