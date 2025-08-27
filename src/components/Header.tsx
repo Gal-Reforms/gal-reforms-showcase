@@ -45,7 +45,7 @@ const Header = () => {
           {/* Logo */}
           <button onClick={handleLogoClick} className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
             <img 
-              src="/lovable-uploads/358be0af-7f4a-4c47-bd7a-8127ae316584.png" 
+              src="/lovable-uploads/716cbf54-69ef-47e4-95a7-ec95811b8e9c.png" 
               alt="Gal Reforms Logo" 
               className="h-12 w-auto"
             />
