@@ -3,6 +3,7 @@ import { ImageBlock } from './ImageBlock';
 import { VideoBlock } from './VideoBlock';
 import { QuoteBlock } from './QuoteBlock';
 import { TwoColumnsBlock } from './TwoColumnsBlock';
+import { GalleryBlock } from './GalleryBlock';
 import { ContentBlock } from '@/hooks/useContentBlocks';
 
 interface ContentBlockRendererProps {
@@ -43,11 +44,7 @@ const renderBlock = (block: ContentBlock) => {
       return <TwoColumnsBlock content={block.content} />;
       
     case 'gallery':
-      return (
-        <div className="text-center text-muted-foreground py-8">
-          <p>Galeria (em desenvolvimento)</p>
-        </div>
-      );
+      return <GalleryBlock content={block.content} />;
       
     default:
       console.warn(`Unknown block type: ${block.block_type}`);

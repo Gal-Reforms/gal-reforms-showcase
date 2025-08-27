@@ -28,6 +28,7 @@ import { ImageBlock } from './ImageBlock';
 import { VideoBlock } from './VideoBlock';
 import { QuoteBlock } from './QuoteBlock';
 import { TwoColumnsBlock } from './TwoColumnsBlock';
+import { GalleryBlock } from './GalleryBlock';
 import { 
   useContentBlocks, 
   useCreateContentBlock, 
@@ -57,7 +58,11 @@ const getDefaultContent = (blockType: string) => {
     case 'image':
       return { url: '', caption: '', alt: '' };
     case 'gallery':
-      return { images: [] };
+      return {
+        images: [],
+        columns: 3,
+        spacing: 'medium'
+      };
     case 'video':
       return { url: '', type: 'youtube', title: '', description: '' };
     case 'quote':
@@ -135,9 +140,10 @@ function SortableBlock({ block, onUpdate, onDelete }: SortableBlockProps) {
         );
       case 'gallery':
         return (
-          <div className="text-center text-muted-foreground py-8">
-            Galeria (em desenvolvimento)
-          </div>
+          <GalleryBlock 
+            content={block.content}
+            onSave={(content) => onUpdate(block.id, content)}
+          />
         );
       default:
         return (
