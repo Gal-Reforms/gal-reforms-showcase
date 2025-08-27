@@ -89,58 +89,88 @@ export type Database = {
       projects: {
         Row: {
           area_sqm: number | null
+          bathrooms: number | null
+          bedrooms: number | null
           budget_range: string | null
           category: string
           category_id: string | null
           client: string | null
           completion_date: string | null
+          construction_type: string | null
           cover_image: string | null
           created_at: string
           description: string | null
           features: string[] | null
           id: string
+          keywords: string[] | null
           location: string | null
+          long_description: string | null
           materials: Json | null
+          meta_description: string | null
+          meta_title: string | null
           published: boolean
+          short_description: string | null
           slug: string
+          start_date: string | null
+          status: Database["public"]["Enums"]["project_status"] | null
           title: string
           updated_at: string
         }
         Insert: {
           area_sqm?: number | null
+          bathrooms?: number | null
+          bedrooms?: number | null
           budget_range?: string | null
           category: string
           category_id?: string | null
           client?: string | null
           completion_date?: string | null
+          construction_type?: string | null
           cover_image?: string | null
           created_at?: string
           description?: string | null
           features?: string[] | null
           id?: string
+          keywords?: string[] | null
           location?: string | null
+          long_description?: string | null
           materials?: Json | null
+          meta_description?: string | null
+          meta_title?: string | null
           published?: boolean
+          short_description?: string | null
           slug: string
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["project_status"] | null
           title: string
           updated_at?: string
         }
         Update: {
           area_sqm?: number | null
+          bathrooms?: number | null
+          bedrooms?: number | null
           budget_range?: string | null
           category?: string
           category_id?: string | null
           client?: string | null
           completion_date?: string | null
+          construction_type?: string | null
           cover_image?: string | null
           created_at?: string
           description?: string | null
           features?: string[] | null
           id?: string
+          keywords?: string[] | null
           location?: string | null
+          long_description?: string | null
           materials?: Json | null
+          meta_description?: string | null
+          meta_title?: string | null
           published?: boolean
+          short_description?: string | null
           slug?: string
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["project_status"] | null
           title?: string
           updated_at?: string
         }
@@ -190,6 +220,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user"
+      project_status: "draft" | "published" | "in_progress" | "completed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -318,6 +349,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
+      project_status: ["draft", "published", "in_progress", "completed"],
     },
   },
 } as const

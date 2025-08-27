@@ -2,6 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { useAdminProject, useCreateProject, useUpdateProject, CreateProjectData } from '@/hooks/useAdminProjects';
 import { useCategories } from '@/hooks/useCategories';
 import { useCheckSlugUniqueness } from '@/hooks/useProjectImageDetails';
