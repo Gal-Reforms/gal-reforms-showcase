@@ -1,11 +1,13 @@
 import { useState, useMemo } from "react";
 import { useProjects, type Project } from "./useProjects";
+import { useCategories } from "./useCategories";
 
 export const useProjectsManager = () => {
   const [selectedCategory, setSelectedCategory] = useState("Todos");
   const { data: projects = [], isLoading, error } = useProjects();
+  const { data: categoriesData = [], isLoading: categoriesLoading } = useCategories();
 
-  const categories = ["Todos", "Reforma Residencial", "Construção Nova", "Reforma Comercial"];
+  const categories = categoriesData.map(cat => cat.name);
   
   const filteredProjects = useMemo(() => {
     if (selectedCategory === "Todos") return projects;
@@ -24,7 +26,7 @@ export const useProjectsManager = () => {
     categories,
     selectedCategory,
     setSelectedCategory,
-    isLoading,
+    isLoading: isLoading || categoriesLoading,
     error,
     hasProjects: projects.length > 0,
     hasFilteredProjects: filteredProjects.length > 0
