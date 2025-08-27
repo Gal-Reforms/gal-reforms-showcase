@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAdminProject, useCreateProject, useUpdateProject, CreateProjectData } from '@/hooks/useAdminProjects';
 import { useCategories } from '@/hooks/useCategories';
+import { useCheckSlugUniqueness } from '@/hooks/useProjectImageDetails';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -17,9 +18,12 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Save, Calendar as CalendarIcon, Plus, X } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ImageUpload } from '@/components/admin/ImageUpload';
+import { CoverImageManager } from '@/components/admin/CoverImageManager';
+import { MaterialsEditor } from '@/components/admin/MaterialsEditor';
 import { useEffect, useState } from 'react';
 import { format, parseISO } from 'date-fns';
 import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
 
 const projectSchema = z.object({
   title: z.string().min(1, 'Título é obrigatório'),
@@ -52,6 +56,8 @@ export default function ProjectForm() {
 
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [newFeature, setNewFeature] = useState('');
+  const [slugError, setSlugError] = useState('');
+  const checkSlugUniqueness = useCheckSlugUniqueness();
 
   const { register, handleSubmit, formState: { errors }, setValue, watch, reset, control } = useForm<ProjectFormData>({
     resolver: zodResolver(projectSchema),
@@ -75,6 +81,9 @@ export default function ProjectForm() {
 
   const watchTitle = watch('title');
   const watchFeatures = watch('features') || [];
+  const watchMaterials = watch('materials') || {};
+  const watchSlug = watch('slug');
+  const watchCoverImage = watch('cover_image');
 
   // Auto-generate slug from title
   useEffect(() => {
@@ -115,6 +124,26 @@ export default function ProjectForm() {
     }
   }, [project, isEditing, reset]);
 
+  // Slug validation
+  const handleSlugBlur = async () => {
+    if (watchSlug && watchSlug.length > 0) {
+      try {
+        const isDuplicate = await checkSlugUniqueness.mutateAsync({ 
+          slug: watchSlug, 
+          excludeId: id 
+        });
+        
+        if (isDuplicate) {
+          setSlugError('Este slug já está sendo usado por outro projeto');
+        } else {
+          setSlugError('');
+        }
+      } catch (error) {
+        console.error('Error checking slug uniqueness:', error);
+      }
+    }
+  };
+
   const onSubmit = async (data: ProjectFormData) => {
     try {
       const submitData: CreateProjectData = {
@@ -136,10 +165,12 @@ export default function ProjectForm() {
 
       if (isEditing && id) {
         await updateProject.mutateAsync({ id, ...submitData });
+        navigate('/admin/projects');
       } else {
-        await createProject.mutateAsync(submitData);
+        const newProject = await createProject.mutateAsync(submitData);
+        // Redirect to edit mode immediately to allow image uploads
+        navigate(`/admin/projects/${newProject.id}/edit`);
       }
-      navigate('/admin/projects');
     } catch (error) {
       console.error('Error saving project:', error);
     }
@@ -226,9 +257,12 @@ export default function ProjectForm() {
                   id="slug"
                   {...register('slug')}
                   placeholder="ex: renovacao-completa-apartamento"
+                  onBlur={handleSlugBlur}
                 />
-                {errors.slug && (
-                  <p className="text-sm text-destructive">{errors.slug.message}</p>
+                {(errors.slug || slugError) && (
+                  <p className="text-sm text-destructive">
+                    {errors.slug?.message || slugError}
+                  </p>
                 )}
                 <p className="text-xs text-muted-foreground">
                   Usado na URL do projeto
@@ -395,27 +429,47 @@ export default function ProjectForm() {
           </CardContent>
         </Card>
 
+        {/* Materials Editor */}
+        <MaterialsEditor
+          materials={watchMaterials}
+          onChange={(materials) => setValue('materials', materials)}
+        />
+
         {/* Image Management - Only show if editing */}
         {isEditing && project && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Gerenciar Imagens</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ImageUpload
-                projectId={project.id}
-                images={project.images || []}
-                onImagesChange={() => {
-                  // Refresh project data when images change
-                  // This will be handled by React Query invalidation
-                }}
-              />
-            </CardContent>
-          </Card>
+          <>
+            {/* Cover Image Manager */}
+            <CoverImageManager
+              projectId={project.id}
+              currentCoverImage={watchCoverImage}
+              galleryImages={project.images?.filter(img => img.image_type === 'gallery') || []}
+            />
+
+            {/* Image Upload */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Gerenciar Imagens do Projeto</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ImageUpload
+                  projectId={project.id}
+                  images={project.images || []}
+                  currentCoverImage={watchCoverImage}
+                  onImagesChange={() => {
+                    // Refresh project data when images change
+                    // This will be handled by React Query invalidation
+                  }}
+                />
+              </CardContent>
+            </Card>
+          </>
         )}
 
         <div className="flex items-center space-x-4">
-          <Button type="submit" disabled={isLoading_form}>
+          <Button 
+            type="submit" 
+            disabled={isLoading_form || !!slugError}
+          >
             <Save className="h-4 w-4 mr-2" />
             {isEditing ? 'Atualizar' : 'Criar'} Projeto
           </Button>
