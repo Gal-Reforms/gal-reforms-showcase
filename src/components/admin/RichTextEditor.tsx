@@ -63,7 +63,7 @@ export function RichTextEditor({ value, onChange, label, placeholder, error }: R
       {error && (
         <p className="text-sm text-destructive">{error}</p>
       )}
-      <style jsx global>{`
+      <style>{`
         .ql-editor {
           min-height: 120px;
           font-family: inherit;
