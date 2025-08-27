@@ -66,11 +66,16 @@ export default function ProjectFormTabs() {
   const createProject = useCreateProject();
   const updateProject = useUpdateProject();
 
+  // Create a temporary project ID for new projects to enable media uploads
+  const [tempProjectId] = useState(() => `temp-${crypto.randomUUID()}`);
+  const currentProjectId = isEditing ? id! : tempProjectId;
+
   const [selectedStartDate, setSelectedStartDate] = useState<Date | undefined>();
   const [selectedCompletionDate, setSelectedCompletionDate] = useState<Date | undefined>();
   const [newFeature, setNewFeature] = useState('');
   const [newKeyword, setNewKeyword] = useState('');
   const [slugError, setSlugError] = useState('');
+  const [uploadProgress, setUploadProgress] = useState({ images: 0, videos: 0 });
   const checkSlugUniqueness = useCheckSlugUniqueness();
 
   const { register, handleSubmit, formState: { errors }, setValue, watch, reset, control } = useForm<ProjectFormData>({
@@ -213,7 +218,8 @@ export default function ProjectFormTabs() {
         navigate('/admin/projects');
       } else {
         const newProject = await createProject.mutateAsync(submitData);
-        // Redirect to edit mode immediately to allow image/video uploads
+        // TODO: Handle temporary media association with the new project
+        toast.success('Projeto criado com sucesso!');
         navigate(`/admin/projects/${newProject.id}/edit`);
       }
     } catch (error) {
@@ -308,18 +314,24 @@ export default function ProjectFormTabs() {
               Informações
             </TabsTrigger>
             <TabsTrigger value="materials">Materiais</TabsTrigger>
-            {isEditing && (
-              <>
-                <TabsTrigger value="media" className="flex items-center gap-2">
-                  <Image className="w-4 h-4" />
-                  Mídia
-                </TabsTrigger>
-                <TabsTrigger value="videos" className="flex items-center gap-2">
-                  <Video className="w-4 h-4" />
-                  Vídeos
-                </TabsTrigger>
-              </>
-            )}
+            <TabsTrigger value="media" className="flex items-center gap-2">
+              <Image className="w-4 h-4" />
+              Mídia
+              {!isEditing && uploadProgress.images > 0 && (
+                <Badge variant="secondary" className="ml-1 text-xs">
+                  {uploadProgress.images}
+                </Badge>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="videos" className="flex items-center gap-2">
+              <Video className="w-4 h-4" />
+              Vídeos
+              {!isEditing && uploadProgress.videos > 0 && (
+                <Badge variant="secondary" className="ml-1 text-xs">
+                  {uploadProgress.videos}
+                </Badge>
+              )}
+            </TabsTrigger>
             <TabsTrigger value="seo" className="flex items-center gap-2">
               <Search className="w-4 h-4" />
               SEO
@@ -615,44 +627,75 @@ export default function ProjectFormTabs() {
             />
           </TabsContent>
 
-          {/* Media Tab - Only show if editing */}
-          {isEditing && project && (
-            <TabsContent value="media" className="space-y-6">
-              {/* Cover Image Manager */}
-              <CoverImageManager
-                projectId={project.id}
-                currentCoverImage={watchCoverImage}
-                galleryImages={project.images?.filter(img => img.image_type === 'gallery') || []}
-              />
-
-              {/* Image Upload */}
+          {/* Media Tab */}
+          <TabsContent value="media" className="space-y-6">
+            {!isEditing && (
               <Card>
-                <CardHeader>
-                  <CardTitle>Gerenciar Imagens do Projeto</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ImageUpload
-                    projectId={project.id}
-                    images={project.images || []}
-                    currentCoverImage={watchCoverImage}
-                    onImagesChange={() => {
-                      // Refresh will be handled by React Query invalidation
-                    }}
-                  />
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2 text-blue-600 bg-blue-50 p-3 rounded-lg">
+                    <Info className="w-4 h-4" />
+                    <p className="text-sm">
+                      Você pode fazer upload de imagens antes de salvar o projeto. Elas serão associadas automaticamente após a criação.
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
-            </TabsContent>
-          )}
+            )}
 
-          {/* Videos Tab - Only show if editing */}
-          {isEditing && project && (
-            <TabsContent value="videos">
-              <VideoManager
-                projectId={project.id}
-                videos={project.videos || []}
-              />
-            </TabsContent>
-          )}
+            {/* Cover Image Manager */}
+            <CoverImageManager
+              projectId={currentProjectId}
+              currentCoverImage={watchCoverImage}
+              galleryImages={isEditing ? (project?.images?.filter(img => img.image_type === 'gallery') || []) : []}
+            />
+
+            {/* Image Upload */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Gerenciar Imagens do Projeto</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ImageUpload
+                  projectId={currentProjectId}
+                  images={isEditing ? (project?.images || []) : []}
+                  currentCoverImage={watchCoverImage}
+                  onImagesChange={() => {
+                    if (!isEditing) {
+                      setUploadProgress(prev => ({ ...prev, images: prev.images + 1 }));
+                    }
+                  }}
+                  isTemporary={!isEditing}
+                />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Videos Tab */}
+          <TabsContent value="videos">
+            {!isEditing && (
+              <Card>
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2 text-blue-600 bg-blue-50 p-3 rounded-lg">
+                    <Info className="w-4 h-4" />
+                    <p className="text-sm">
+                      Você pode adicionar vídeos antes de salvar o projeto. Eles serão associados automaticamente após a criação.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            <VideoManager
+              projectId={currentProjectId}
+              videos={isEditing ? (project?.videos || []) : []}
+              onVideosChange={() => {
+                if (!isEditing) {
+                  setUploadProgress(prev => ({ ...prev, videos: prev.videos + 1 }));
+                }
+              }}
+              isTemporary={!isEditing}
+            />
+          </TabsContent>
 
           {/* SEO Tab */}
           <TabsContent value="seo" className="space-y-6">

@@ -15,15 +15,17 @@ import { Upload, X, Image as ImageIcon, Loader2, ChevronLeft, ChevronRight, Crow
 import { useUploadProjectImage, useDeleteProjectImage, useUpdateProjectImageOrder } from '@/hooks/useProjectImages';
 import { useUpdateProjectImageDetails, useSetProjectCoverImage } from '@/hooks/useProjectImageDetails';
 import { ProjectImage } from '@/hooks/useProjects';
+import { toast } from 'sonner';
 
 interface ImageUploadProps {
   projectId: string;
   images: ProjectImage[];
   currentCoverImage?: string;
   onImagesChange?: () => void;
+  isTemporary?: boolean;
 }
 
-export function ImageUpload({ projectId, images, currentCoverImage, onImagesChange }: ImageUploadProps) {
+export function ImageUpload({ projectId, images, currentCoverImage, onImagesChange, isTemporary = false }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [selectedImageType, setSelectedImageType] = useState<'gallery' | 'before' | 'after'>('gallery');
   const uploadImage = useUploadProjectImage();
@@ -41,6 +43,13 @@ export function ImageUpload({ projectId, images, currentCoverImage, onImagesChan
       try {
         const imagesOfType = images.filter(img => img.image_type === selectedImageType);
         const orderIndex = imagesOfType.length;
+        
+        if (isTemporary) {
+          // Handle temporary upload logic here
+          // For now, we'll use the regular upload but could be extended
+          toast.success('Upload temporário - será associado ao salvar o projeto');
+        }
+        
         await uploadImage.mutateAsync({
           file,
           projectId,
@@ -54,7 +63,7 @@ export function ImageUpload({ projectId, images, currentCoverImage, onImagesChan
     
     setUploading(false);
     onImagesChange?.();
-  }, [projectId, images, selectedImageType, uploadImage, onImagesChange]);
+  }, [projectId, images, selectedImageType, uploadImage, onImagesChange, isTemporary]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,

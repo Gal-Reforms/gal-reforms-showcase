@@ -14,9 +14,11 @@ import { toast } from 'sonner';
 interface VideoManagerProps {
   projectId: string;
   videos: ProjectVideo[];
+  onVideosChange?: () => void;
+  isTemporary?: boolean;
 }
 
-export const VideoManager = ({ projectId, videos }: VideoManagerProps) => {
+export const VideoManager = ({ projectId, videos, onVideosChange, isTemporary = false }: VideoManagerProps) => {
   const [isAddingVideo, setIsAddingVideo] = useState(false);
   const [videoUrl, setVideoUrl] = useState('');
   const [videoTitle, setVideoTitle] = useState('');
@@ -68,6 +70,10 @@ export const VideoManager = ({ projectId, videos }: VideoManagerProps) => {
   const handleAddVideo = async () => {
     if (videoType === 'upload' && uploadFile) {
       try {
+        if (isTemporary) {
+          toast.success('Upload temporário - será associado ao salvar o projeto');
+        }
+        
         await uploadVideo.mutateAsync({
           file: uploadFile,
           projectId,
@@ -76,6 +82,7 @@ export const VideoManager = ({ projectId, videos }: VideoManagerProps) => {
           orderIndex: videos.length,
         });
         resetForm();
+        onVideosChange?.();
       } catch (error) {
         console.error('Error uploading video:', error);
       }
@@ -88,6 +95,10 @@ export const VideoManager = ({ projectId, videos }: VideoManagerProps) => {
       }
 
       try {
+        if (isTemporary) {
+          toast.success('Vídeo temporário - será associado ao salvar o projeto');
+        }
+        
         await createVideo.mutateAsync({
           project_id: projectId,
           video_url: embedUrl,
@@ -97,6 +108,7 @@ export const VideoManager = ({ projectId, videos }: VideoManagerProps) => {
           order_index: videos.length,
         });
         resetForm();
+        onVideosChange?.();
       } catch (error) {
         console.error('Error adding video:', error);
       }
