@@ -5,7 +5,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Edit3, Check, X, Play } from 'lucide-react';
+import { Edit3, Check, X, Play, Upload } from 'lucide-react';
+import { useDropzone } from 'react-dropzone';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 interface VideoBlockProps {
@@ -26,6 +28,7 @@ export const VideoBlock = ({ content, isEditing = false, onSave, onCancel }: Vid
   const [title, setTitle] = useState(content.title || '');
   const [description, setDescription] = useState(content.description || '');
   const [isLocalEditing, setIsLocalEditing] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   const extractVideoId = (url: string, type: 'youtube' | 'vimeo') => {
     if (type === 'youtube') {
@@ -78,6 +81,47 @@ export const VideoBlock = ({ content, isEditing = false, onSave, onCancel }: Vid
     onCancel?.();
   };
 
+  const onDrop = async (acceptedFiles: File[]) => {
+    if (acceptedFiles.length === 0) return;
+
+    const file = acceptedFiles[0];
+    setUploading(true);
+
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `content-blocks/videos/${crypto.randomUUID()}.${fileExt}`;
+
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('projects')
+        .upload(fileName, file);
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('projects')
+        .getPublicUrl(fileName);
+
+      setUrl(publicUrl);
+      setType('upload');
+      toast.success('Vídeo enviado com sucesso!');
+    } catch (error: any) {
+      toast.error(error.message || 'Erro ao enviar vídeo');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      'video/*': ['.mp4', '.mov', '.avi', '.mkv', '.webm']
+    },
+    multiple: false,
+    maxSize: 100 * 1024 * 1024 // 100MB max
+  });
+
   if (isEditing || isLocalEditing) {
     return (
       <Card>
@@ -85,7 +129,7 @@ export const VideoBlock = ({ content, isEditing = false, onSave, onCancel }: Vid
           <div className="flex items-center justify-between">
             <h4 className="text-sm font-medium">Bloco de Vídeo</h4>
             <div className="flex gap-2">
-              <Button size="sm" onClick={handleSave}>
+              <Button size="sm" onClick={handleSave} disabled={uploading}>
                 <Check className="w-4 h-4 mr-1" />
                 Salvar
               </Button>
@@ -97,6 +141,30 @@ export const VideoBlock = ({ content, isEditing = false, onSave, onCancel }: Vid
           </div>
 
           <div className="space-y-4">
+            {/* Upload Area */}
+            <div
+              {...getRootProps()}
+              className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
+                isDragActive 
+                  ? 'border-primary bg-primary/5' 
+                  : 'border-muted-foreground/25 hover:border-primary/50'
+              } ${uploading ? 'opacity-50 pointer-events-none' : ''}`}
+            >
+              <input {...getInputProps()} />
+              <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
+              <p className="text-sm text-muted-foreground mb-1">
+                {uploading 
+                  ? 'Enviando vídeo...' 
+                  : isDragActive 
+                  ? 'Solte o vídeo aqui...' 
+                  : 'Arraste um vídeo ou clique para selecionar'
+                }
+              </p>
+              <p className="text-xs text-muted-foreground">
+                MP4, MOV, AVI, MKV, WebM (máx. 100MB)
+              </p>
+            </div>
+
             {/* Video Type */}
             <div className="space-y-2">
               <Label>Tipo de Vídeo</Label>
@@ -156,10 +224,25 @@ export const VideoBlock = ({ content, isEditing = false, onSave, onCancel }: Vid
 
   if (!content.url) {
     return (
-      <div className="text-center text-muted-foreground py-8">
-        <Play className="w-12 h-12 mx-auto mb-2" />
-        Vídeo não configurado
-      </div>
+      <Card className="group relative">
+        <CardContent className="p-8 text-center">
+          <Play className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+          <h3 className="text-lg font-semibold mb-2">Vídeo vazio</h3>
+          <p className="text-muted-foreground">Nenhum vídeo configurado para este bloco.</p>
+          
+          {onSave && (
+            <Button 
+              onClick={() => setIsLocalEditing(true)}
+              className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity"
+              size="sm"
+              variant="outline"
+            >
+              <Edit3 className="w-4 h-4 mr-2" />
+              Editar
+            </Button>
+          )}
+        </CardContent>
+      </Card>
     );
   }
 

@@ -167,9 +167,25 @@ export const ImageBlock = ({ content, isEditing = false, onSave, onCancel }: Ima
 
   if (!content.url) {
     return (
-      <div className="text-center text-muted-foreground py-8">
-        Imagem não configurada
-      </div>
+      <Card className="group relative">
+        <CardContent className="p-8 text-center">
+          <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+          <h3 className="text-lg font-semibold mb-2">Imagem vazia</h3>
+          <p className="text-muted-foreground">Nenhuma imagem configurada para este bloco.</p>
+          
+          {onSave && (
+            <Button 
+              onClick={() => setIsLocalEditing(true)}
+              className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity"
+              size="sm"
+              variant="outline"
+            >
+              <Edit3 className="w-4 h-4 mr-2" />
+              Editar
+            </Button>
+          )}
+        </CardContent>
+      </Card>
     );
   }
 
