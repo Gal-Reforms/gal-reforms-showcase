@@ -43,6 +43,7 @@ export type Database = {
       }
       project_images: {
         Row: {
+          alt_text: string | null
           caption: string | null
           created_at: string
           id: string
@@ -52,6 +53,7 @@ export type Database = {
           project_id: string
         }
         Insert: {
+          alt_text?: string | null
           caption?: string | null
           created_at?: string
           id?: string
@@ -61,6 +63,7 @@ export type Database = {
           project_id: string
         }
         Update: {
+          alt_text?: string | null
           caption?: string | null
           created_at?: string
           id?: string
@@ -85,6 +88,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      project_videos: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          order_index: number
+          project_id: string
+          thumbnail_url: string | null
+          title: string | null
+          video_type: string
+          video_url: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          order_index?: number
+          project_id: string
+          thumbnail_url?: string | null
+          title?: string | null
+          video_type?: string
+          video_url: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          order_index?: number
+          project_id?: string
+          thumbnail_url?: string | null
+          title?: string | null
+          video_type?: string
+          video_url?: string
+        }
+        Relationships: []
       }
       projects: {
         Row: {

@@ -190,9 +190,10 @@ const ProjectDetails = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-7xl mx-auto">
             <Tabs defaultValue="gallery" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 mb-8">
+              <TabsList className="grid w-full grid-cols-4 mb-8">
                 <TabsTrigger value="gallery">{t('gallery')}</TabsTrigger>
                 <TabsTrigger value="beforeafter">{t('beforeAfter')}</TabsTrigger>
+                <TabsTrigger value="videos">Vídeos</TabsTrigger>
                 <TabsTrigger value="details">{t('projectDetails')}</TabsTrigger>
               </TabsList>
 
@@ -220,6 +221,47 @@ const ProjectDetails = () => {
                     />
                   ) : (
                     <p className="text-muted-foreground text-center py-12">No hay imágenes de antes y después disponibles</p>
+                  )}
+                </AnimatedSection>
+              </TabsContent>
+
+              {/* Videos Tab */}
+              <TabsContent value="videos" className="space-y-6">
+                <AnimatedSection>
+                  <h2 className="text-3xl font-bold mb-6">Vídeos do Projeto</h2>
+                  {project.videos && project.videos.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {project.videos.map((video) => (
+                        <div key={video.id} className="space-y-4">
+                          <div className="aspect-video bg-muted rounded-lg overflow-hidden">
+                            {video.video_type === 'upload' ? (
+                              <video
+                                src={video.video_url}
+                                className="w-full h-full object-cover"
+                                controls
+                                poster={video.thumbnail_url}
+                              />
+                            ) : (
+                              <iframe
+                                src={video.video_url}
+                                className="w-full h-full"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                              />
+                            )}
+                          </div>
+                          {video.title && (
+                            <h3 className="text-lg font-semibold">{video.title}</h3>
+                          )}
+                          {video.description && (
+                            <p className="text-muted-foreground">{video.description}</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-muted-foreground text-center py-12">Nenhum vídeo disponível</p>
                   )}
                 </AnimatedSection>
               </TabsContent>
