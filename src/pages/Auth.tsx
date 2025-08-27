@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { Navigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,18 +9,61 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 import { t } from '@/lib/translations';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function Auth() {
-  const { user, signIn, signUp, loading } = useAuth();
+  const { user, signIn, signUp, loading, isAdmin, isAdminLoading } = useAuth();
+  const navigate = useNavigate();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
 
   // If accessing /auth directly, redirect to admin after login
   const from = location.state?.from?.pathname || '/admin';
 
-  // Redirect if already authenticated
-  if (user && !loading) {
-    return <Navigate to={from} replace />;
+  // Redirect if authenticated and admin status is determined
+  useEffect(() => {
+    if (user && !loading && !isAdminLoading) {
+      if (from === '/admin' && isAdmin) {
+        navigate(from, { replace: true });
+      } else if (from !== '/admin') {
+        navigate(from, { replace: true });
+      }
+    }
+  }, [user, loading, isAdminLoading, isAdmin, from, navigate]);
+
+  // Show loading if still checking authentication or admin status
+  if (loading || isAdminLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
+
+  // If user is authenticated but not admin and trying to access admin, show message
+  if (user && !isAdmin && from === '/admin') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted">
+        <Card className="w-full max-w-md p-6">
+          <div className="text-center space-y-4">
+            <h1 className="text-2xl font-bold text-foreground">Access Denied</h1>
+            <p className="text-muted-foreground">
+              You don't have admin privileges to access this area.
+            </p>
+            <Button
+              onClick={() => {
+                supabase.auth.signOut();
+                navigate('/auth', { replace: true });
+              }}
+              variant="outline"
+              className="w-full"
+            >
+              Sign Out
+            </Button>
+          </div>
+        </Card>
+      </div>
+    );
   }
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
