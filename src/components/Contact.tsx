@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { t } from "@/lib/translations";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -20,8 +21,8 @@ const Contact = () => {
     e.preventDefault();
     // Here you would typically send the form data to your backend
     toast({
-      title: "Mensagem enviada!",
-      description: "Entraremos em contato em breve. Obrigado pelo interesse!",
+      title: t('messageSent'),
+      description: t('messageSuccessDescription'),
     });
     setFormData({
       name: "",
@@ -42,27 +43,27 @@ const Contact = () => {
   const contactInfo = [
     {
       icon: Phone,
-      title: "Telefone",
+      title: t('phone'),
       content: "+34 XXX XXX XXX",
-      description: "Ligue para nós"
+      description: "Llámanos"
     },
     {
       icon: Mail,
-      title: "Email",
-      content: "contato@galreforms.com",
-      description: "Envie um email"
+      title: t('email'),
+      content: "contacto@galreforms.com",
+      description: t('sendEmail')
     },
     {
       icon: MapPin,
-      title: "Localização",
-      content: "Madrid, Espanha",
-      description: "Atendemos toda região"
+      title: t('location'),
+      content: t('madrid'),
+      description: "Atendemos toda la región"
     },
     {
       icon: Clock,
-      title: "Horário",
-      content: "Seg - Sex: 8h às 18h",
-      description: "Sáb: 9h às 14h"
+      title: t('hours'),
+      content: t('businessHours'),
+      description: "Sáb: 9h - 14h"
     }
   ];
 
@@ -72,11 +73,10 @@ const Contact = () => {
         {/* Header */}
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-serif mb-6">
-            Entre em <span className="text-gold-gradient">Contato</span>
+            {t('getInTouch')} <span className="text-gold-gradient">{t('contact')}</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Pronto para transformar seu espaço? Entre em contato conosco e receba um orçamento 
-            personalizado sem compromisso.
+            {t('contactDescription')}
           </p>
         </div>
 
@@ -106,15 +106,15 @@ const Contact = () => {
                 <div className="w-16 h-16 bg-[#25D366] rounded-full flex items-center justify-center mx-auto mb-4">
                   <Phone className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="font-semibold text-foreground mb-2">WhatsApp</h3>
+                <h3 className="font-semibold text-foreground mb-2">{t('whatsappContact')}</h3>
                 <p className="text-muted-foreground text-sm mb-4">
-                  Fale conosco diretamente pelo WhatsApp para respostas mais rápidas.
+                  Habla con nosotros directamente por WhatsApp para respuestas más rápidas.
                 </p>
                 <Button 
                   className="w-full bg-[#25D366] hover:bg-[#25D366]/90 text-white"
-                  onClick={() => window.open('https://wa.me/34XXXXXXXXX?text=Olá! Gostaria de solicitar um orçamento.', '_blank')}
+                  onClick={() => window.open(`https://wa.me/34XXXXXXXXX?text=${encodeURIComponent(t('whatsappMessage'))}`, '_blank')}
                 >
-                  Chamar no WhatsApp
+                  Llamar por WhatsApp
                 </Button>
               </CardContent>
             </Card>
@@ -125,14 +125,14 @@ const Contact = () => {
             <Card className="shadow-elegant animate-scale-in">
               <CardHeader>
                 <CardTitle className="text-2xl font-serif text-foreground">
-                  Solicite seu Orçamento
+                  {t('requestQuote')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="name">Nome Completo *</Label>
+                      <Label htmlFor="name">{t('fullName')} *</Label>
                       <Input
                         id="name"
                         name="name"
@@ -143,7 +143,7 @@ const Contact = () => {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="email">Email *</Label>
+                      <Label htmlFor="email">{t('email')} *</Label>
                       <Input
                         id="email"
                         name="email"
@@ -158,7 +158,7 @@ const Contact = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="phone">Telefone</Label>
+                      <Label htmlFor="phone">{t('phone')}</Label>
                       <Input
                         id="phone"
                         name="phone"
@@ -168,11 +168,11 @@ const Contact = () => {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="subject">Tipo de Serviço *</Label>
+                      <Label htmlFor="subject">{t('subject')} *</Label>
                       <Input
                         id="subject"
                         name="subject"
-                        placeholder="Ex: Reforma de cozinha, Construção nova..."
+                        placeholder="Ej: Reforma de cocina, Construcción nueva..."
                         value={formData.subject}
                         onChange={handleChange}
                         required
@@ -182,11 +182,11 @@ const Contact = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="message">Mensagem *</Label>
+                    <Label htmlFor="message">{t('message')} *</Label>
                     <Textarea
                       id="message"
                       name="message"
-                      placeholder="Descreva seu projeto e suas necessidades..."
+                      placeholder="Describe tu proyecto y tus necesidades..."
                       value={formData.message}
                       onChange={handleChange}
                       required
@@ -200,7 +200,7 @@ const Contact = () => {
                     size="lg" 
                     className="w-full bg-primary hover:bg-primary-dark text-primary-foreground shadow-gold"
                   >
-                    Enviar Mensagem
+                    {t('sendMessage')}
                   </Button>
                 </form>
               </CardContent>

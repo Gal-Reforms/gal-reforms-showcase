@@ -2,33 +2,34 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle, Star, Shield, Wrench } from "lucide-react";
 import aboutTeam from "@/assets/about-team.jpg";
+import { t } from "@/lib/translations";
 
 const About = () => {
   const features = [
     {
       icon: Star,
-      title: "Qualidade Premium",
-      description: "Utilizamos apenas materiais de primeira linha e técnicas avançadas de construção."
+      title: "Calidad Premium",
+      description: "Utilizamos solo materiales de primera línea y técnicas avanzadas de construcción."
     },
     {
       icon: Shield,
-      title: "Garantia Total",
-      description: "Todos os nossos trabalhos possuem garantia completa e suporte pós-obra."
+      title: "Garantía Total",
+      description: "Todos nuestros trabajos cuentan con garantía completa y soporte post-obra."
     },
     {
       icon: Wrench,
-      title: "Equipe Especializada",
-      description: "Profissionais qualificados com anos de experiência em construção e reforma."
+      title: "Equipo Especializado",
+      description: "Profesionales cualificados con años de experiencia en construcción y reforma."
     }
   ];
 
   const achievements = [
-    "Mais de 15 anos no mercado espanhol",
-    "Equipe técnica certificada e experiente",
-    "Projetos personalizados e únicos",
-    "Uso de tecnologia moderna na construção",
-    "Atendimento personalizado do início ao fim",
-    "Prazos cumpridos rigorosamente"
+    "Más de 15 años en el mercado español",
+    "Equipo técnico certificado y experimentado",
+    "Proyectos personalizados y únicos",
+    "Uso de tecnología moderna en la construcción",
+    "Atención personalizada de principio a fin",
+    "Plazos cumplidos rigurosamente"
   ];
 
   const scrollToSection = (sectionId: string) => {
@@ -43,12 +44,10 @@ const About = () => {
           {/* Content */}
           <div className="animate-slide-up">
             <h2 className="text-4xl md:text-5xl font-serif text-foreground mb-6">
-              Sobre a <span className="text-gold-gradient">Gal Reforms</span>
+              {t('about')} <span className="text-gold-gradient">{t('aboutGalReforms')}</span>
             </h2>
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-              Somos uma empresa especializada em construção e reformas com mais de 15 anos de experiência 
-              no mercado espanhol. Nossa missão é transformar espaços com qualidade excepcional, 
-              design sofisticado e acabamentos impecáveis.
+              {t('aboutDescription')}
             </p>
             
             <div className="space-y-4 mb-8">
@@ -65,7 +64,7 @@ const About = () => {
               className="bg-primary hover:bg-primary-dark text-primary-foreground shadow-gold"
               onClick={() => scrollToSection("contact")}
             >
-              Fale Conosco
+              {t('contactUs')}
             </Button>
           </div>
 

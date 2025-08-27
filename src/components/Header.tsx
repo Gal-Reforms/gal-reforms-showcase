@@ -3,6 +3,7 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Phone, Mail, User } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { t } from "@/lib/translations";
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -44,28 +45,28 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <button onClick={() => handleNavigation("home")} className="text-foreground hover:text-primary transition-colors font-medium">
-              Início
+              {t('home')}
             </button>
             <button onClick={() => handleNavigation("about")} className="text-foreground hover:text-primary transition-colors font-medium">
-              Sobre
+              {t('about')}
             </button>
             <button onClick={() => handleNavigation("projects")} className="text-foreground hover:text-primary transition-colors font-medium">
-              Projetos
+              {t('projects')}
             </button>
             <button onClick={() => handleNavigation("contact")} className="text-foreground hover:text-primary transition-colors font-medium">
-              Contato
+              {t('contact')}
             </button>
             {user ? (
               <Button variant="outline" size="sm" asChild>
                 <Link to={isAdmin ? "/admin" : "/auth"}>
-                  {isAdmin ? "Admin" : "Perfil"}
+                  {isAdmin ? t('admin') : t('profile')}
                 </Link>
               </Button>
             ) : (
               <Button variant="outline" size="sm" asChild>
                 <Link to="/auth">
                   <User className="h-4 w-4 mr-2" />
-                  Entrar
+                  {t('login')}
                 </Link>
               </Button>
             )}
@@ -78,7 +79,7 @@ const Header = () => {
               <span>+34 XXX XXX XXX</span>
             </div>
             <Button variant="default" className="bg-primary hover:bg-primary-dark text-primary-foreground shadow-gold" onClick={() => handleNavigation("contact")}>
-              Orçamento Grátis
+              {t('freeQuote')}
             </Button>
           </div>
 
@@ -92,20 +93,20 @@ const Header = () => {
         {isMobileMenuOpen && <div className="md:hidden bg-background border-t border-border py-4 animate-fade-in">
             <nav className="flex flex-col space-y-4">
               <button onClick={() => handleNavigation("home")} className="text-left text-foreground hover:text-primary transition-colors font-medium py-2">
-                Início
+                {t('home')}
               </button>
               <button onClick={() => handleNavigation("about")} className="text-left text-foreground hover:text-primary transition-colors font-medium py-2">
-                Sobre
+                {t('about')}
               </button>
               <button onClick={() => handleNavigation("projects")} className="text-left text-foreground hover:text-primary transition-colors font-medium py-2">
-                Projetos
+                {t('projects')}
               </button>
               <button onClick={() => handleNavigation("contact")} className="text-left text-foreground hover:text-primary transition-colors font-medium py-2">
-                Contato
+                {t('contact')}
               </button>
               <div className="pt-4 border-t border-border">
                 <Button variant="default" className="w-full bg-primary hover:bg-primary-dark text-primary-foreground" onClick={() => handleNavigation("contact")}>
-                  Orçamento Grátis
+                  {t('freeQuote')}
                 </Button>
               </div>
             </nav>

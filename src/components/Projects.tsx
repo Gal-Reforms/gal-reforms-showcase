@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Calendar, Users, Wrench, Eye, Loader2, ExternalLink } from "lucide-react";
-import { useProjects, Project } from "@/hooks/useProjects";
+import { Badge } from "@/components/ui/badge";
+import { Loader2, MapPin, Calendar, ArrowRight, AlertCircle, Eye, Wrench } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useProjects, type Project } from "@/hooks/useProjects";
+import { t } from "@/lib/translations";
 
 // Fallback project data for when Supabase is empty
 const fallbackProjects = [
@@ -77,10 +78,10 @@ const Projects = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl font-bold text-foreground mb-4">
-            Os Nossos Projetos
+            {t('ourProjects')}
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Descubra alguns dos nossos trabalhos mais representativos. Cada projeto é único e reflete o nosso compromisso com a excelência e qualidade.
+            Descubre algunos de nuestros trabajos más representativos. Cada proyecto es único y refleja nuestro compromiso con la excelencia y calidad.
           </p>
         </div>
 
@@ -102,14 +103,14 @@ const Projects = () => {
         {isLoading && (
           <div className="flex justify-center items-center py-12">
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
-            <span className="ml-2 text-muted-foreground">Carregando projetos...</span>
+            <span className="ml-2 text-muted-foreground">{t('loadingProjects')}</span>
           </div>
         )}
 
         {/* Error State */}
         {error && !isLoading && (
           <div className="text-center py-12">
-            <p className="text-muted-foreground mb-4">Erro ao carregar projetos da base de dados. Mostrando projetos de exemplo.</p>
+            <p className="text-muted-foreground mb-4">{t('errorLoadingProjects')}</p>
           </div>
         )}
 
@@ -170,7 +171,7 @@ const Projects = () => {
                     className="hover-scale shadow-md"
                   >
                     <Eye className="w-4 h-4 mr-2" />
-                    Ver Detalhes
+                    {t('viewDetails')}
                   </Button>
                 </div>
               </CardContent>
@@ -181,7 +182,7 @@ const Projects = () => {
         {/* Empty State */}
         {!isLoading && filteredProjects.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-muted-foreground">Nenhum projeto encontrado para esta categoria.</p>
+            <p className="text-muted-foreground">{t('noProjectsFound')}</p>
           </div>
         )}
 
@@ -189,10 +190,10 @@ const Projects = () => {
       <div className="text-center mt-16 animate-fade-in">
         <div className="bg-gradient-primary p-8 rounded-2xl text-white shadow-elegant hover:shadow-glow transition-shadow duration-300">
           <h3 className="text-2xl font-bold mb-4">
-            Tem um projeto em mente?
+            ¿Tienes un proyecto en mente?
           </h3>
           <p className="text-xl text-white/90 mb-6 max-w-2xl mx-auto">
-            Entre em contacto connosco e descubra como podemos transformar as suas ideias em realidade.
+            Contáctanos y descubre cómo podemos transformar tus ideas en realidad.
           </p>
           <Button 
             variant="secondary" 
@@ -201,7 +202,7 @@ const Projects = () => {
             className="bg-white text-primary hover:bg-white/90 hover-scale shadow-lg"
           >
             <Wrench className="w-5 h-5 mr-2" />
-            Solicitar Orçamento
+            {t('requestQuote')}
           </Button>
         </div>
       </div>

@@ -1,22 +1,23 @@
 import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Linkedin } from "lucide-react";
+import { t } from "@/lib/translations";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const services = [
-    "Construção Residencial",
-    "Reformas Completas", 
-    "Cozinhas e Banheiros",
-    "Fachadas e Exteriores",
-    "Projetos Comerciais",
-    "Consultoria Técnica"
+    "Construcción Residencial",
+    t('completeReforms'), 
+    t('kitchenReforms'),
+    "Fachadas y Exteriores",
+    t('commercialProjects'),
+    "Consultoría Técnica"
   ];
 
   const quickLinks = [
-    { name: "Início", href: "#home" },
-    { name: "Sobre", href: "#about" },
-    { name: "Projetos", href: "#projects" },
-    { name: "Contato", href: "#contact" }
+    { name: t('home'), href: "#home" },
+    { name: t('about'), href: "#about" },
+    { name: t('projects'), href: "#projects" },
+    { name: t('contact'), href: "#contact" }
   ];
 
   const scrollToSection = (sectionId: string) => {
@@ -37,8 +38,8 @@ const Footer = () => {
                 className="h-12 w-auto mb-4 brightness-0 invert"
               />
               <p className="text-background/80 leading-relaxed">
-                Transformamos espaços com qualidade excepcional há mais de 15 anos. 
-                Sua satisfação é nossa prioridade.
+                Transformamos espacios con calidad excepcional desde hace más de 15 años. 
+                Tu satisfacción es nuestra prioridad.
               </p>
             </div>
             

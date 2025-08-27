@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
+import { t } from '@/lib/translations';
 
 export default function Auth() {
   const { user, signIn, signUp, loading } = useAuth();
@@ -32,9 +33,9 @@ export default function Auth() {
     const { error } = await signIn(email, password);
 
     if (error) {
-      toast.error(error.message || 'Erro ao fazer login');
+      toast.error(error.message || t('loginError'));
     } else {
-      toast.success('Login realizado com sucesso!');
+      toast.success(t('loginSuccess'));
     }
 
     setIsLoading(false);
@@ -50,13 +51,13 @@ export default function Auth() {
     const confirmPassword = formData.get('confirmPassword') as string;
 
     if (password !== confirmPassword) {
-      toast.error('As senhas não coincidem');
+      toast.error(t('passwordsDontMatch'));
       setIsLoading(false);
       return;
     }
 
     if (password.length < 6) {
-      toast.error('A senha deve ter pelo menos 6 caracteres');
+      toast.error(t('passwordMinLength'));
       setIsLoading(false);
       return;
     }
@@ -64,9 +65,9 @@ export default function Auth() {
     const { error } = await signUp(email, password);
 
     if (error) {
-      toast.error(error.message || 'Erro ao criar conta');
+      toast.error(error.message || t('signupError'));
     } else {
-      toast.success('Conta criada com sucesso! Verifique seu email.');
+      toast.success(t('accountCreated'));
     }
 
     setIsLoading(false);
@@ -78,41 +79,41 @@ export default function Auth() {
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">GAL REFORMAS S.L</CardTitle>
           <CardDescription>
-            Acesse sua conta ou crie uma nova
+            Accede a tu cuenta o crea una nueva
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="signin" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="signin">Login</TabsTrigger>
-              <TabsTrigger value="signup">Cadastrar</TabsTrigger>
+              <TabsTrigger value="signin">{t('signin')}</TabsTrigger>
+              <TabsTrigger value="signup">{t('signup')}</TabsTrigger>
             </TabsList>
             
             <TabsContent value="signin" className="space-y-4 mt-4">
               <form onSubmit={handleSignIn} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="signin-email">Email</Label>
+                  <Label htmlFor="signin-email">{t('email')}</Label>
                   <Input
                     id="signin-email"
                     name="email"
                     type="email"
-                    placeholder="seu@email.com"
+                    placeholder="tu@email.com"
                     required
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signin-password">Senha</Label>
+                  <Label htmlFor="signin-password">{t('password')}</Label>
                   <Input
                     id="signin-password"
                     name="password"
                     type="password"
-                    placeholder="Sua senha"
+                    placeholder="Tu contraseña"
                     required
                   />
                 </div>
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-                  Entrar
+                  {t('signin')}
                 </Button>
               </form>
             </TabsContent>
@@ -120,17 +121,17 @@ export default function Auth() {
             <TabsContent value="signup" className="space-y-4 mt-4">
               <form onSubmit={handleSignUp} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="signup-email">Email</Label>
+                  <Label htmlFor="signup-email">{t('email')}</Label>
                   <Input
                     id="signup-email"
                     name="email"
                     type="email"
-                    placeholder="seu@email.com"
+                    placeholder="tu@email.com"
                     required
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signup-password">Senha</Label>
+                  <Label htmlFor="signup-password">{t('password')}</Label>
                   <Input
                     id="signup-password"
                     name="password"
@@ -141,18 +142,18 @@ export default function Auth() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="confirm-password">Confirmar Senha</Label>
+                  <Label htmlFor="confirm-password">{t('confirmPassword')}</Label>
                   <Input
                     id="confirm-password"
                     name="confirmPassword"
                     type="password"
-                    placeholder="Confirme sua senha"
+                    placeholder="Confirma tu contraseña"
                     required
                   />
                 </div>
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-                  Criar Conta
+                  {t('createAccount')}
                 </Button>
               </form>
             </TabsContent>

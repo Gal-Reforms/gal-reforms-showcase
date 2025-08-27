@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Award, Users, Clock } from "lucide-react";
+import { t } from "@/lib/translations";
 import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
 import hero3 from "@/assets/hero-3.jpg";
@@ -85,7 +86,7 @@ const Hero = () => {
                   className="bg-primary hover:bg-primary-dark text-primary-foreground shadow-gold text-lg px-8 py-6"
                   onClick={() => scrollToSection("contact")}
                 >
-                  Solicitar Orçamento
+                  {t('requestQuote')}
                 </Button>
                 <Button 
                   size="lg" 
@@ -93,7 +94,7 @@ const Hero = () => {
                   className="border-2 border-white text-white hover:bg-white hover:text-foreground text-lg px-8 py-6"
                   onClick={() => scrollToSection("projects")}
                 >
-                  Ver Projetos
+                  {t('viewProjects')}
                 </Button>
               </div>
 
@@ -103,21 +104,21 @@ const Hero = () => {
                   <Award className="w-8 h-8 text-primary" />
                   <div>
                     <div className="text-2xl font-bold">15+</div>
-                    <div className="text-sm opacity-80">Anos de Experiência</div>
+                    <div className="text-sm opacity-80">{t('yearsExperience')}</div>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Users className="w-8 h-8 text-primary" />
                   <div>
                     <div className="text-2xl font-bold">500+</div>
-                    <div className="text-sm opacity-80">Projetos Realizados</div>
+                    <div className="text-sm opacity-80">{t('projectsCompleted')}</div>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Clock className="w-8 h-8 text-primary" />
                   <div>
                     <div className="text-2xl font-bold">100%</div>
-                    <div className="text-sm opacity-80">Satisfação Garantida</div>
+                    <div className="text-sm opacity-80">{t('satisfactionGuaranteed')}</div>
                   </div>
                 </div>
               </div>
