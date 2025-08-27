@@ -9,6 +9,7 @@ import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { PerformanceMonitor, registerServiceWorker } from "@/components/seo/PerformanceOptimizer";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
+import { CookieConsentBanner } from "@/components/common/CookieConsentBanner";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import ProjectDetails from "./pages/ProjectDetails";
@@ -36,6 +37,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <PerformanceMonitor />
+          <CookieConsentBanner />
           <BrowserRouter>
           <AuthProvider>
             <Routes>
