@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Phone, Mail } from "lucide-react";
+import { Menu, X, Phone, Mail, User } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, isAdmin } = useAuth();
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -53,6 +55,20 @@ const Header = () => {
             <button onClick={() => handleNavigation("contact")} className="text-foreground hover:text-primary transition-colors font-medium">
               Contato
             </button>
+            {user ? (
+              <Button variant="outline" size="sm" asChild>
+                <Link to={isAdmin ? "/admin" : "/auth"}>
+                  {isAdmin ? "Admin" : "Perfil"}
+                </Link>
+              </Button>
+            ) : (
+              <Button variant="outline" size="sm" asChild>
+                <Link to="/auth">
+                  <User className="h-4 w-4 mr-2" />
+                  Entrar
+                </Link>
+              </Button>
+            )}
           </nav>
 
           {/* Contact Info & CTA */}

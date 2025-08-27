@@ -14,6 +14,7 @@ export interface Project {
   title: string;
   slug: string;
   category: string;
+  category_id?: string;
   location?: string;
   description?: string;
   cover_image?: string;
@@ -23,6 +24,9 @@ export interface Project {
   budget_range?: string;
   materials?: any;
   features?: string[];
+  published: boolean;
+  created_at: string;
+  updated_at: string;
   images: ProjectImage[];
   beforeImages: ProjectImage[];
   afterImages: ProjectImage[];
