@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Edit3, Check, X, Quote } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface QuoteBlockProps {
   content: {
@@ -25,9 +26,10 @@ export const QuoteBlock = ({ content, isEditing = false, onSave, onCancel }: Quo
 
   const handleSave = () => {
     if (!quote.trim()) {
+      toast.error('A citação não pode estar vazia');
       return;
     }
-    onSave?.({ quote, author, role });
+    onSave?.({ quote: quote.trim(), author: author.trim(), role: role.trim() });
     setIsLocalEditing(false);
   };
 
@@ -96,26 +98,49 @@ export const QuoteBlock = ({ content, isEditing = false, onSave, onCancel }: Quo
 
   if (!content.quote) {
     return (
-      <div className="text-center text-muted-foreground py-8">
-        <Quote className="w-12 h-12 mx-auto mb-2" />
-        Citação não configurada
-      </div>
+      <Card className="group relative">
+        <CardContent className="p-8 text-center">
+          <Quote className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+          <h3 className="text-lg font-semibold mb-2">Citação vazia</h3>
+          <p className="text-muted-foreground">Adicione uma citação inspiradora ou depoimento.</p>
+          
+          {onSave && (
+            <Button 
+              onClick={() => setIsLocalEditing(true)}
+              className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity"
+              size="sm"
+              variant="outline"
+            >
+              <Edit3 className="w-4 h-4 mr-2" />
+              Editar
+            </Button>
+          )}
+        </CardContent>
+      </Card>
     );
   }
 
   return (
     <div className="group relative">
-      <blockquote className="border-l-4 border-primary pl-6 py-4 bg-muted/30 rounded-r-lg">
-        <div className="flex items-start gap-3">
-          <Quote className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
-          <div className="space-y-2">
-            <p className="text-lg italic text-foreground leading-relaxed">
+      <blockquote className="relative border-l-4 border-primary pl-6 py-6 bg-gradient-to-r from-muted/30 to-transparent rounded-r-lg">
+        <div className="flex items-start gap-4">
+          <Quote className="w-8 h-8 text-primary flex-shrink-0 mt-1 opacity-80" />
+          <div className="space-y-3">
+            <p className="text-lg italic text-foreground leading-relaxed font-medium">
               "{content.quote}"
             </p>
             {(content.author || content.role) && (
-              <footer className="text-sm text-muted-foreground">
-                {content.author && <span className="font-medium">— {content.author}</span>}
-                {content.role && <span className="ml-2">{content.role}</span>}
+              <footer className="text-sm">
+                {content.author && (
+                  <cite className="font-semibold text-foreground not-italic">
+                    — {content.author}
+                  </cite>
+                )}
+                {content.role && (
+                  <div className="text-muted-foreground mt-1">
+                    {content.role}
+                  </div>
+                )}
               </footer>
             )}
           </div>

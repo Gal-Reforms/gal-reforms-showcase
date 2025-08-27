@@ -152,12 +152,20 @@ export const TwoColumnsBlock = ({ content, isEditing = false, onSave, onCancel }
                       leftDropzone.isDragActive 
                         ? 'border-primary bg-primary/5' 
                         : 'border-muted-foreground/25 hover:border-primary/50'
-                    }`}
+                    } ${uploading === 'left' ? 'opacity-50 pointer-events-none' : ''}`}
                   >
                     <input {...leftDropzone.getInputProps()} />
                     <Upload className="w-6 h-6 mx-auto mb-2 text-muted-foreground" />
-                    <p className="text-xs text-muted-foreground">Upload de imagem</p>
+                    <p className="text-xs text-muted-foreground">
+                      {uploading === 'left' ? 'Enviando...' : 'Upload de imagem'}
+                    </p>
                   </div>
+                  
+                  <Input
+                    value={leftContent.imageUrl || ''}
+                    onChange={(e) => setLeftContent(prev => ({ ...prev, imageUrl: e.target.value }))}
+                    placeholder="Ou cole uma URL da imagem..."
+                  />
                   
                   {leftContent.imageUrl && (
                     <img src={leftContent.imageUrl} alt="" className="w-full h-32 object-cover rounded" />
@@ -205,12 +213,20 @@ export const TwoColumnsBlock = ({ content, isEditing = false, onSave, onCancel }
                       rightDropzone.isDragActive 
                         ? 'border-primary bg-primary/5' 
                         : 'border-muted-foreground/25 hover:border-primary/50'
-                    }`}
+                    } ${uploading === 'right' ? 'opacity-50 pointer-events-none' : ''}`}
                   >
                     <input {...rightDropzone.getInputProps()} />
                     <Upload className="w-6 h-6 mx-auto mb-2 text-muted-foreground" />
-                    <p className="text-xs text-muted-foreground">Upload de imagem</p>
+                    <p className="text-xs text-muted-foreground">
+                      {uploading === 'right' ? 'Enviando...' : 'Upload de imagem'}
+                    </p>
                   </div>
+                  
+                  <Input
+                    value={rightContent.imageUrl || ''}
+                    onChange={(e) => setRightContent(prev => ({ ...prev, imageUrl: e.target.value }))}
+                    placeholder="Ou cole uma URL da imagem..."
+                  />
                   
                   {rightContent.imageUrl && (
                     <img src={rightContent.imageUrl} alt="" className="w-full h-32 object-cover rounded" />
@@ -225,6 +241,33 @@ export const TwoColumnsBlock = ({ content, isEditing = false, onSave, onCancel }
               )}
             </div>
           </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const isEmpty = (!leftContent.text && !leftContent.imageUrl) && 
+                  (!rightContent.text && !rightContent.imageUrl);
+  
+  if (isEmpty) {
+    return (
+      <Card className="group relative">
+        <CardContent className="p-8 text-center">
+          <Columns2 className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+          <h3 className="text-lg font-semibold mb-2">Duas colunas vazias</h3>
+          <p className="text-muted-foreground">Configure o conteúdo das colunas esquerda e direita.</p>
+          
+          {onSave && (
+            <Button 
+              onClick={() => setIsLocalEditing(true)}
+              className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity"
+              size="sm"
+              variant="outline"
+            >
+              <Edit3 className="w-4 h-4 mr-2" />
+              Editar
+            </Button>
+          )}
         </CardContent>
       </Card>
     );
