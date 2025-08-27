@@ -39,7 +39,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <button onClick={handleLogoClick} className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-            <img src="/lovable-uploads/716cbf54-69ef-47e4-95a7-ec95811b8e9c.png" alt="Gal Reforms Logo" className="max-h-12 w-auto" />
+            <img src="/lovable-uploads/716cbf54-69ef-47e4-95a7-ec95811b8e9c.png" alt="Gal Reforms Logo" className="max-h-16 w-auto" />
           </button>
 
           {/* Desktop Navigation */}
@@ -56,20 +56,6 @@ const Header = () => {
             <button onClick={() => handleNavigation("contact")} className="text-foreground hover:text-primary transition-colors font-medium">
               {t('contact')}
             </button>
-            {user ? (
-              <Button variant="outline" size="sm" asChild>
-                <Link to={isAdmin ? "/admin" : "/auth"}>
-                  {isAdmin ? t('admin') : t('profile')}
-                </Link>
-              </Button>
-            ) : (
-              <Button variant="outline" size="sm" asChild>
-                <Link to="/auth">
-                  <User className="h-4 w-4 mr-2" />
-                  {t('login')}
-                </Link>
-              </Button>
-            )}
           </nav>
 
           {/* Contact Info & CTA */}
@@ -89,28 +75,53 @@ const Header = () => {
           </button>
         </div>
 
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && <div className="md:hidden bg-background border-t border-border py-4 animate-fade-in">
-            <nav className="flex flex-col space-y-4">
-              <button onClick={() => handleNavigation("home")} className="text-left text-foreground hover:text-primary transition-colors font-medium py-2">
-                {t('home')}
-              </button>
-              <button onClick={() => handleNavigation("about")} className="text-left text-foreground hover:text-primary transition-colors font-medium py-2">
-                {t('about')}
-              </button>
-              <button onClick={() => handleNavigation("projects")} className="text-left text-foreground hover:text-primary transition-colors font-medium py-2">
-                {t('projects')}
-              </button>
-              <button onClick={() => handleNavigation("contact")} className="text-left text-foreground hover:text-primary transition-colors font-medium py-2">
-                {t('contact')}
-              </button>
-              <div className="pt-4 border-t border-border">
-                <Button variant="default" className="w-full bg-primary hover:bg-primary-dark text-primary-foreground" onClick={() => handleNavigation("contact")}>
-                  {t('freeQuote')}
-                </Button>
-              </div>
-            </nav>
-          </div>}
+        {/* Mobile Menu Overlay */}
+        {isMobileMenuOpen && (
+          <>
+            <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setIsMobileMenuOpen(false)} />
+            <div className="fixed top-20 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border py-6 px-4 shadow-lg animate-fade-in z-50 md:hidden">
+              <nav className="flex flex-col space-y-6">
+                <button 
+                  onClick={() => handleNavigation("home")} 
+                  className="flex items-center space-x-3 text-left text-foreground hover:text-primary transition-colors font-medium py-3 text-lg"
+                >
+                  <span className="text-primary">🏠</span>
+                  <span>{t('home')}</span>
+                </button>
+                <button 
+                  onClick={() => handleNavigation("about")} 
+                  className="flex items-center space-x-3 text-left text-foreground hover:text-primary transition-colors font-medium py-3 text-lg"
+                >
+                  <span className="text-primary">👥</span>
+                  <span>{t('about')}</span>
+                </button>
+                <button 
+                  onClick={() => handleNavigation("projects")} 
+                  className="flex items-center space-x-3 text-left text-foreground hover:text-primary transition-colors font-medium py-3 text-lg"
+                >
+                  <span className="text-primary">🏗️</span>
+                  <span>{t('projects')}</span>
+                </button>
+                <button 
+                  onClick={() => handleNavigation("contact")} 
+                  className="flex items-center space-x-3 text-left text-foreground hover:text-primary transition-colors font-medium py-3 text-lg"
+                >
+                  <span className="text-primary">📞</span>
+                  <span>{t('contact')}</span>
+                </button>
+                <div className="pt-4 border-t border-border">
+                  <Button 
+                    variant="default" 
+                    className="w-full bg-primary hover:bg-primary-dark text-primary-foreground text-lg py-4" 
+                    onClick={() => handleNavigation("contact")}
+                  >
+                    {t('freeQuote')}
+                  </Button>
+                </div>
+              </nav>
+            </div>
+          </>
+        )}
       </div>
     </header>;
 };
