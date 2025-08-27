@@ -7,6 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { PerformanceMonitor, registerServiceWorker } from "@/components/seo/PerformanceOptimizer";
+import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import ProjectDetails from "./pages/ProjectDetails";
@@ -26,12 +27,13 @@ const queryClient = new QueryClient();
 registerServiceWorker();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <PerformanceMonitor />
-      <BrowserRouter>
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <PerformanceMonitor />
+        <BrowserRouter>
         <AuthProvider>
           <Routes>
             <Route path="/" element={<Index />} />
@@ -63,6 +65,7 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;

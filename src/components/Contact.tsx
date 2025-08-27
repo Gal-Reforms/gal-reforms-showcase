@@ -9,9 +9,13 @@ import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { useStaggeredReveal } from "@/hooks/useScrollReveal";
 import { t } from "@/lib/translations";
+import { useValidation, ValidationSchemas } from "@/lib/validation";
+import { useFormSubmit } from "@/hooks/useAsync";
+import { ErrorHandler } from "@/lib/errors";
+import { ContactFormData } from "@/lib/types";
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ContactFormData>({
     name: "",
     email: "",
     phone: "",
@@ -19,27 +23,53 @@ const Contact = () => {
     message: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const { validate, hasError, getError, clearFieldError } = useValidation(ValidationSchemas.contactForm);
+
+  // Mock submit function - in real app, this would send to backend
+  const submitContactForm = async (data: ContactFormData) => {
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return { success: true };
+  };
+
+  const { submit, loading } = useFormSubmit(submitContactForm, {
+    onSuccess: () => {
+      toast({
+        title: t('messageSent'),
+        description: t('messageSuccessDescription'),
+      });
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: ""
+      });
+    },
+    onError: (error) => {
+      ErrorHandler.handle(error, 'Failed to send message. Please try again.');
+    }
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the form data to your backend
-    toast({
-      title: t('messageSent'),
-      description: t('messageSuccessDescription'),
-    });
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      subject: "",
-      message: ""
-    });
+    
+    const validationResult = validate(formData);
+    if (!validationResult.isValid) {
+      return;
+    }
+
+    await submit(formData);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Clear field error when user starts typing
+    if (hasError(name)) {
+      clearFieldError(name);
+    }
   };
 
   const contactInfo = [
@@ -158,9 +188,14 @@ const Contact = () => {
                           value={formData.name}
                           onChange={handleChange}
                           required
-                          className="focus:ring-primary focus:border-primary transition-all duration-300 focus:scale-105"
+                          className={`focus:ring-primary focus:border-primary transition-all duration-300 focus:scale-105 ${
+                            hasError('name') ? 'border-destructive' : ''
+                          }`}
                           placeholder="Tu nombre completo"
                         />
+                        {hasError('name') && (
+                          <p className="text-sm text-destructive mt-1">{getError('name')}</p>
+                        )}
                       </div>
                       <div className="space-y-2 group">
                         <Label htmlFor="email" className="text-foreground font-medium">{t('email')} *</Label>
@@ -220,9 +255,10 @@ const Contact = () => {
                     <Button 
                       type="submit" 
                       size="lg" 
+                      disabled={loading}
                       className="w-full bg-primary hover:bg-primary-dark text-primary-foreground shadow-gold hover-glow transition-all duration-300 transform hover:scale-105"
                     >
-                      {t('sendMessage')}
+                      {loading ? 'Enviando...' : t('sendMessage')}
                     </Button>
                   </form>
                 </CardContent>
