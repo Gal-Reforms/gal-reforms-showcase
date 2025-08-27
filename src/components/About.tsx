@@ -2,6 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle, Star, Shield, Wrench } from "lucide-react";
 import aboutTeam from "@/assets/about-team.jpg";
+import { LazyImage } from "@/components/ui/LazyImage";
+import { AnimatedSection } from "@/components/ui/AnimatedSection";
+import { useStaggeredReveal } from "@/hooks/useScrollReveal";
 import { t } from "@/lib/translations";
 
 const About = () => {
@@ -37,23 +40,34 @@ const About = () => {
     element?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const [staggerRef, visibleItems] = useStaggeredReveal(achievements.length, 150);
+
   return (
     <section id="about" className="py-20 bg-secondary/30">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
-          <div className="animate-slide-up">
-            <h2 className="text-4xl md:text-5xl font-serif text-foreground mb-6">
-              {t('about')} <span className="text-gold-gradient">{t('aboutGalReforms')}</span>
+          <AnimatedSection animation="fade-in-right">
+            <h2 className="text-display text-foreground mb-6">
+              {t('about')} <span className="text-gradient-gold">{t('aboutGalReforms')}</span>
             </h2>
-            <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+            <p className="text-body-large text-muted-foreground mb-8 leading-relaxed">
               {t('aboutDescription')}
             </p>
             
-            <div className="space-y-4 mb-8">
+            <div ref={staggerRef} className="space-y-4 mb-8">
               {achievements.map((achievement, index) => (
-                <div key={index} className="flex items-start space-x-3">
-                  <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                <div 
+                  key={index} 
+                  className={`flex items-start space-x-3 transition-all duration-500 ${
+                    visibleItems[index] 
+                      ? 'opacity-100 transform translate-x-0' 
+                      : 'opacity-0 transform translate-x-8'
+                  }`}
+                  style={{ transitionDelay: `${index * 150}ms` }}
+                >
+                  <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0 animate-bounce-in" 
+                               style={{ animationDelay: `${(index * 150) + 300}ms` }} />
                   <span className="text-foreground">{achievement}</span>
                 </div>
               ))}
@@ -61,22 +75,23 @@ const About = () => {
 
             <Button 
               size="lg" 
-              className="bg-primary hover:bg-primary-dark text-primary-foreground shadow-gold"
+              className="bg-primary hover:bg-primary-dark text-primary-foreground shadow-gold hover-glow transform transition-all duration-300 hover:scale-105"
               onClick={() => scrollToSection("contact")}
             >
               {t('contactUs')}
             </Button>
-          </div>
+          </AnimatedSection>
 
           {/* Image */}
-          <div className="animate-scale-in">
-            <div className="relative">
-              <img
+          <AnimatedSection animation="fade-in-left" delay={200}>
+            <div className="relative group">
+              <LazyImage
                 src={aboutTeam}
-                alt="Equipe Gal Reforms"
-                className="rounded-2xl shadow-elegant w-full h-[500px] object-cover"
+                alt="Equipo Gal Reforms"
+                className="rounded-2xl shadow-elegant w-full h-[500px] transition-transform duration-500 group-hover:scale-105"
+                quality="high"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent rounded-2xl" />
             </div>
           </div>
         </div>

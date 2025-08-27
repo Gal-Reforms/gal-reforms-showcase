@@ -5,6 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, MapPin, Calendar, ArrowRight, AlertCircle, Eye, Wrench } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useProjects, type Project } from "@/hooks/useProjects";
+import { LazyImage } from "@/components/ui/LazyImage";
+import { AnimatedSection } from "@/components/ui/AnimatedSection";
+import { useStaggeredReveal } from "@/hooks/useScrollReveal";
 import { t } from "@/lib/translations";
 
 // Fallback project data for when Supabase is empty
@@ -73,31 +76,38 @@ const Projects = () => {
     navigate(`/projeto/${project.slug}`);
   };
 
+  const [staggerRef, visibleItems] = useStaggeredReveal(filteredProjects.length, 200);
+
   return (
     <section id="projects" className="py-24 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl font-bold text-foreground mb-4">
-            {t('ourProjects')}
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Descubre algunos de nuestros trabajos más representativos. Cada proyecto es único y refleja nuestro compromiso con la excelencia y calidad.
-          </p>
-        </div>
+        <AnimatedSection animation="fade-in-up">
+          <div className="text-center mb-16">
+            <h2 className="text-display text-foreground mb-4">
+              {t('ourProjects')}
+            </h2>
+            <p className="text-body-large text-muted-foreground max-w-3xl mx-auto">
+              Descubre algunos de nuestros trabajos más representativos. Cada proyecto es único y refleja nuestro compromiso con la excelencia y calidad.
+            </p>
+          </div>
+        </AnimatedSection>
 
         {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12 animate-fade-in">
-          {categories.map((category) => (
-            <Button
-              key={category}
-              variant={selectedCategory === category ? "default" : "outline"}
-              onClick={() => setSelectedCategory(category)}
-              className="hover-scale"
-            >
-              {category}
-            </Button>
-          ))}
-        </div>
+        <AnimatedSection animation="fade-in-up" delay={200}>
+          <div className="flex flex-wrap justify-center gap-4 mb-12">
+            {categories.map((category, index) => (
+              <Button
+                key={category}
+                variant={selectedCategory === category ? "default" : "outline"}
+                onClick={() => setSelectedCategory(category)}
+                className="hover-scale stagger-item transition-all duration-300"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                {category}
+              </Button>
+            ))}
+          </div>
+        </AnimatedSection>
 
         {/* Loading State */}
         {isLoading && (
@@ -115,65 +125,56 @@ const Projects = () => {
         )}
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in">
+        <div ref={staggerRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProjects.map((project, index) => (
             <Card 
               key={project.id} 
-              className="group hover:shadow-elegant transition-all duration-300 hover:-translate-y-2 bg-card/80 backdrop-blur-sm border-border/50 overflow-hidden"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className={`group hover-lift overflow-hidden border-0 shadow-soft hover:shadow-gold transition-all duration-500 ${
+                visibleItems[index] 
+                  ? 'opacity-100 transform translate-y-0' 
+                  : 'opacity-0 transform translate-y-8'
+              }`}
+              style={{ transitionDelay: `${index * 200}ms` }}
             >
-              <div className="aspect-video overflow-hidden relative">
-                <img
-                  src={project.cover_image || project.galleryImages[0]?.image_url || "/src/assets/project-1.jpg"}
+              <div className="relative h-64 overflow-hidden">
+                <LazyImage
+                  src={project.cover_image || '/placeholder-project.jpg'}
                   alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-full transition-transform duration-700 group-hover:scale-110"
+                  quality="medium"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <Badge className="bg-primary/90 text-primary-foreground shadow-lg">
-                    {project.category}
-                  </Badge>
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <Badge className="absolute top-4 left-4 bg-primary/90 backdrop-blur-sm text-primary-foreground animate-fade-in-right">
+                  {project.category}
+                </Badge>
               </div>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-xl group-hover:text-primary transition-colors line-clamp-2">
+
+              <CardContent className="p-6">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+                  <MapPin className="w-4 h-4" />
+                  <span>{project.location}</span>
+                  <Calendar className="w-4 h-4 ml-4" />
+                  <span>{project.year}</span>
+                </div>
+                
+                <CardTitle className="text-xl mb-3 group-hover:text-primary transition-colors duration-300">
                   {project.title}
                 </CardTitle>
-                {project.location && (
-                  <CardDescription className="flex items-center gap-2 text-muted-foreground">
-                    <MapPin className="w-4 h-4 shrink-0" />
-                    <span className="line-clamp-1">{project.location}</span>
-                  </CardDescription>
-                )}
-              </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-muted-foreground mb-6 line-clamp-3 text-sm leading-relaxed">
+                
+                <CardDescription className="text-muted-foreground mb-4 line-clamp-3 leading-relaxed">
                   {project.description}
-                </p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                    {project.completion_date && (
-                      <div className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3" />
-                        <span>{new Date(project.completion_date).getFullYear()}</span>
-                      </div>
-                    )}
-                    {project.area_sqm && (
-                      <div className="flex items-center gap-1">
-                        <Wrench className="w-3 h-3" />
-                        <span>{project.area_sqm}m²</span>
-                      </div>
-                    )}
-                  </div>
-                  <Button 
-                    size="sm"
-                    onClick={() => viewProjectDetails(project)}
-                    className="hover-scale shadow-md"
-                  >
-                    <Eye className="w-4 h-4 mr-2" />
+                </CardDescription>
+
+                <Button 
+                  onClick={() => viewProjectDetails(project)}
+                  className="w-full group bg-transparent border border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover-glow"
+                >
+                  <div className="flex items-center justify-center">
+                    <Eye className="w-4 h-4 mr-2 transition-transform group-hover:scale-110" />
                     {t('viewDetails')}
-                  </Button>
-                </div>
+                  </div>
+                  <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                </Button>
               </CardContent>
             </Card>
           ))}
@@ -186,28 +187,28 @@ const Projects = () => {
           </div>
         )}
 
-      {/* Call to Action */}
-      <div className="text-center mt-16 animate-fade-in">
-        <div className="bg-gradient-primary p-8 rounded-2xl text-white shadow-elegant hover:shadow-glow transition-shadow duration-300">
-          <h3 className="text-2xl font-bold mb-4">
-            ¿Tienes un proyecto en mente?
-          </h3>
-          <p className="text-xl text-white/90 mb-6 max-w-2xl mx-auto">
-            Contáctanos y descubre cómo podemos transformar tus ideas en realidad.
-          </p>
-          <Button 
-            variant="secondary" 
-            size="lg"
-            onClick={scrollToContact}
-            className="bg-white text-primary hover:bg-white/90 hover-scale shadow-lg"
-          >
-            <Wrench className="w-5 h-5 mr-2" />
-            {t('requestQuote')}
-          </Button>
-        </div>
+        {/* Call to Action */}
+        <AnimatedSection animation="scale-in" delay={400}>
+          <div className="mt-20 text-center bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-2xl p-12 hover-lift">
+            <h3 className="text-2xl font-bold mb-4 text-gradient-gold">
+              ¿Tienes un proyecto en mente?
+            </h3>
+            <p className="text-body-large text-foreground/80 mb-6 max-w-2xl mx-auto">
+              Contáctanos y descubre cómo podemos transformar tus ideas en realidad.
+            </p>
+            <Button 
+              variant="default" 
+              size="lg"
+              onClick={scrollToContact}
+              className="bg-primary text-primary-foreground hover:bg-primary-dark hover-glow shadow-gold transition-all duration-300 transform hover:scale-105"
+            >
+              <Wrench className="w-5 h-5 mr-2 animate-float" />
+              {t('requestQuote')}
+            </Button>
+          </div>
+        </AnimatedSection>
       </div>
-    </div>
-  </section>
+    </section>
 );
 };
 

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Award, Users, Clock } from "lucide-react";
+import { LazyImage } from "@/components/ui/LazyImage";
+import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { t } from "@/lib/translations";
 import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
@@ -80,48 +82,52 @@ const Hero = () => {
                 {slides[currentSlide].subtitle}
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                <Button 
-                  size="lg" 
-                  className="bg-primary hover:bg-primary-dark text-primary-foreground shadow-gold text-lg px-8 py-6"
-                  onClick={() => scrollToSection("contact")}
-                >
-                  {t('requestQuote')}
-                </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline" 
-                  className="border-2 border-white text-white hover:bg-white hover:text-foreground text-lg px-8 py-6"
-                  onClick={() => scrollToSection("projects")}
-                >
-                  {t('viewProjects')}
-                </Button>
+                <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-fade-in-up">
+                  <Button 
+                    size="lg" 
+                    className="bg-primary hover:bg-primary-dark text-primary-foreground shadow-gold text-lg px-8 py-6 hover-glow transition-all duration-300 transform hover:scale-105"
+                    onClick={() => scrollToSection("contact")}
+                  >
+                    {t('requestQuote')}
+                  </Button>
+                  <Button 
+                    size="lg" 
+                    variant="outline" 
+                    className="border-2 border-white text-white hover:bg-white hover:text-foreground text-lg px-8 py-6 backdrop-blur-sm bg-white/10 transition-all duration-300 transform hover:scale-105"
+                    onClick={() => scrollToSection("projects")}
+                  >
+                    {t('viewProjects')}
+                  </Button>
+                </div>
               </div>
+            </AnimatedSection>
 
-              {/* Stats */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl">
-                <div className="flex items-center space-x-3">
-                  <Award className="w-8 h-8 text-primary" />
+            {/* Stats */}
+            <AnimatedSection animation="fade-in-up" delay={600}>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto">
+                <div className="flex items-center space-x-3 stagger-item backdrop-blur-sm bg-white/10 rounded-lg p-4 hover-scale">
+                  <Award className="w-8 h-8 text-primary animate-float" />
                   <div>
                     <div className="text-2xl font-bold">15+</div>
                     <div className="text-sm opacity-80">{t('yearsExperience')}</div>
                   </div>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <Users className="w-8 h-8 text-primary" />
+                <div className="flex items-center space-x-3 stagger-item backdrop-blur-sm bg-white/10 rounded-lg p-4 hover-scale">
+                  <Users className="w-8 h-8 text-primary animate-float" style={{ animationDelay: '1s' }} />
                   <div>
                     <div className="text-2xl font-bold">500+</div>
                     <div className="text-sm opacity-80">{t('projectsCompleted')}</div>
                   </div>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <Clock className="w-8 h-8 text-primary" />
+                <div className="flex items-center space-x-3 stagger-item backdrop-blur-sm bg-white/10 rounded-lg p-4 hover-scale">
+                  <Clock className="w-8 h-8 text-primary animate-float" style={{ animationDelay: '2s' }} />
                   <div>
                     <div className="text-2xl font-bold">100%</div>
                     <div className="text-sm opacity-80">{t('satisfactionGuaranteed')}</div>
                   </div>
                 </div>
               </div>
+            </AnimatedSection>
             </div>
           </div>
         </div>

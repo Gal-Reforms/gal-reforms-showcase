@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { AnimatedSection } from "@/components/ui/AnimatedSection";
+import { useStaggeredReveal } from "@/hooks/useScrollReveal";
 import { t } from "@/lib/translations";
 
 const Contact = () => {
@@ -67,145 +69,166 @@ const Contact = () => {
     }
   ];
 
+  const [staggerRef, visibleItems] = useStaggeredReveal(contactInfo.length, 150);
+
   return (
     <section id="contact" className="py-20 bg-secondary/30">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-serif mb-6">
-            {t('getInTouch')} <span className="text-gold-gradient">{t('contact')}</span>
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            {t('contactDescription')}
-          </p>
-        </div>
+        <AnimatedSection animation="fade-in-up">
+          <div className="text-center mb-16">
+            <h2 className="text-display mb-6">
+              {t('getInTouch')} <span className="text-gradient-gold">{t('contact')}</span>
+            </h2>
+            <p className="text-body-large text-muted-foreground max-w-3xl mx-auto">
+              {t('contactDescription')}
+            </p>
+          </div>
+        </AnimatedSection>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Contact Information */}
-          <div className="lg:col-span-1 space-y-6">
-            {contactInfo.map((info, index) => (
-              <Card key={index} className="hover-lift animate-slide-up">
-                <CardContent className="p-6">
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <info.icon className="w-6 h-6 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-foreground mb-1">{info.title}</h3>
-                      <p className="text-muted-foreground text-sm mb-1">{info.description}</p>
-                      <p className="font-medium text-foreground">{info.content}</p>
-                    </div>
+          <AnimatedSection animation="fade-in-left">
+            <div className="lg:col-span-1 space-y-6">
+              <div ref={staggerRef}>
+                {contactInfo.map((info, index) => (
+                  <Card 
+                    key={index} 
+                    className={`hover-lift transition-all duration-500 bg-card/90 backdrop-blur-sm ${
+                      visibleItems[index] 
+                        ? 'opacity-100 transform translate-x-0' 
+                        : 'opacity-0 transform translate-x-8'
+                    }`}
+                    style={{ transitionDelay: `${index * 150}ms` }}
+                  >
+                    <CardContent className="p-6">
+                      <div className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <info.icon className="w-6 h-6 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-foreground mb-1">{info.title}</h3>
+                          <p className="text-muted-foreground text-sm mb-1">{info.description}</p>
+                          <p className="font-medium text-foreground">{info.content}</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+
+              {/* WhatsApp CTA */}
+              <Card className="bg-[#25D366]/5 border-[#25D366]/20 hover-lift animate-bounce-in">
+                <CardContent className="p-6 text-center">
+                  <div className="w-16 h-16 bg-[#25D366] rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
+                    <Phone className="w-8 h-8 text-white" />
                   </div>
+                  <h3 className="font-semibold text-foreground mb-2">{t('whatsappContact')}</h3>
+                  <p className="text-muted-foreground text-sm mb-4">
+                    Habla con nosotros directamente por WhatsApp para respuestas más rápidas.
+                  </p>
+                  <Button 
+                    className="w-full bg-[#25D366] hover:bg-[#25D366]/90 text-white hover-glow transition-all duration-300"
+                    onClick={() => window.open(`https://wa.me/34XXXXXXXXX?text=${encodeURIComponent(t('whatsappMessage'))}`, '_blank')}
+                  >
+                    Llamar por WhatsApp
+                  </Button>
                 </CardContent>
               </Card>
-            ))}
-
-            {/* WhatsApp CTA */}
-            <Card className="bg-[#25D366]/5 border-[#25D366]/20 hover-lift animate-scale-in">
-              <CardContent className="p-6 text-center">
-                <div className="w-16 h-16 bg-[#25D366] rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Phone className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="font-semibold text-foreground mb-2">{t('whatsappContact')}</h3>
-                <p className="text-muted-foreground text-sm mb-4">
-                  Habla con nosotros directamente por WhatsApp para respuestas más rápidas.
-                </p>
-                <Button 
-                  className="w-full bg-[#25D366] hover:bg-[#25D366]/90 text-white"
-                  onClick={() => window.open(`https://wa.me/34XXXXXXXXX?text=${encodeURIComponent(t('whatsappMessage'))}`, '_blank')}
-                >
-                  Llamar por WhatsApp
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
+            </div>
+          </AnimatedSection>
 
           {/* Contact Form */}
-          <div className="lg:col-span-2">
-            <Card className="shadow-elegant animate-scale-in">
-              <CardHeader>
-                <CardTitle className="text-2xl font-serif text-foreground">
-                  {t('requestQuote')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">{t('fullName')} *</Label>
-                      <Input
-                        id="name"
-                        name="name"
-                        value={formData.name}
+          <AnimatedSection animation="fade-in-right" delay={200}>
+            <div className="lg:col-span-2">
+              <Card className="shadow-elegant hover-lift transition-all duration-500 bg-card/95 backdrop-blur-md">
+                <CardHeader>
+                  <CardTitle className="text-2xl font-display text-foreground">
+                    {t('requestQuote')}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2 group">
+                        <Label htmlFor="name" className="text-foreground font-medium">{t('fullName')} *</Label>
+                        <Input
+                          id="name"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          required
+                          className="focus:ring-primary focus:border-primary transition-all duration-300 focus:scale-105"
+                          placeholder="Tu nombre completo"
+                        />
+                      </div>
+                      <div className="space-y-2 group">
+                        <Label htmlFor="email" className="text-foreground font-medium">{t('email')} *</Label>
+                        <Input
+                          id="email"
+                          name="email"
+                          type="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          required
+                          className="focus:ring-primary focus:border-primary transition-all duration-300 focus:scale-105"
+                          placeholder="tu@email.com"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2 group">
+                        <Label htmlFor="phone" className="text-foreground font-medium">{t('phone')}</Label>
+                        <Input
+                          id="phone"
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleChange}
+                          className="focus:ring-primary focus:border-primary transition-all duration-300 focus:scale-105"
+                          placeholder="+34 XXX XXX XXX"
+                        />
+                      </div>
+                      <div className="space-y-2 group">
+                        <Label htmlFor="subject" className="text-foreground font-medium">{t('subject')} *</Label>
+                        <Input
+                          id="subject"
+                          name="subject"
+                          placeholder="Ej: Reforma de cocina, Construcción nueva..."
+                          value={formData.subject}
+                          onChange={handleChange}
+                          required
+                          className="focus:ring-primary focus:border-primary transition-all duration-300 focus:scale-105"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 group">
+                      <Label htmlFor="message" className="text-foreground font-medium">{t('message')} *</Label>
+                      <Textarea
+                        id="message"
+                        name="message"
+                        placeholder="Describe tu proyecto y tus necesidades..."
+                        value={formData.message}
                         onChange={handleChange}
                         required
-                        className="focus:ring-primary focus:border-primary"
+                        rows={6}
+                        className="focus:ring-primary focus:border-primary transition-all duration-300 resize-none"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email">{t('email')} *</Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        className="focus:ring-primary focus:border-primary"
-                      />
-                    </div>
-                  </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">{t('phone')}</Label>
-                      <Input
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        className="focus:ring-primary focus:border-primary"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="subject">{t('subject')} *</Label>
-                      <Input
-                        id="subject"
-                        name="subject"
-                        placeholder="Ej: Reforma de cocina, Construcción nueva..."
-                        value={formData.subject}
-                        onChange={handleChange}
-                        required
-                        className="focus:ring-primary focus:border-primary"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="message">{t('message')} *</Label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      placeholder="Describe tu proyecto y tus necesidades..."
-                      value={formData.message}
-                      onChange={handleChange}
-                      required
-                      rows={6}
-                      className="focus:ring-primary focus:border-primary"
-                    />
-                  </div>
-
-                  <Button 
-                    type="submit" 
-                    size="lg" 
-                    className="w-full bg-primary hover:bg-primary-dark text-primary-foreground shadow-gold"
-                  >
-                    {t('sendMessage')}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
+                    <Button 
+                      type="submit" 
+                      size="lg" 
+                      className="w-full bg-primary hover:bg-primary-dark text-primary-foreground shadow-gold hover-glow transition-all duration-300 transform hover:scale-105"
+                    >
+                      {t('sendMessage')}
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            </div>
+          </AnimatedSection>
         </div>
       </div>
     </section>
