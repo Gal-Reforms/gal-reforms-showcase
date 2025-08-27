@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { AdminLayout } from "@/components/admin/AdminLayout";
+import { PerformanceMonitor, registerServiceWorker } from "@/components/seo/PerformanceOptimizer";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import ProjectDetails from "./pages/ProjectDetails";
@@ -21,11 +22,15 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+// Register service worker for caching
+registerServiceWorker();
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <PerformanceMonitor />
       <BrowserRouter>
         <AuthProvider>
           <Routes>

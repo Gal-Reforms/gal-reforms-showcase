@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { useSEO } from "@/hooks/useSEO";
 import { OrganizationSchema, ServiceSchema } from "@/components/seo/StructuredData";
-import { injectCriticalCSS } from "@/components/seo/ImageOptimizer";
+import { injectCriticalCSS } from "@/components/seo/PerformanceOptimizer";
 
 const Index = () => {
   const location = useLocation();
