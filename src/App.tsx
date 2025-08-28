@@ -43,14 +43,9 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
-              <Route path="/proyecto/:slug" element={<ProjectDetails />} />
-<<<<<<< HEAD
-              <Route path="/politica-de-privacidad" element={<PrivacyPolicy />} />
-              <Route path="/terminos-de-servicio" element={<TermsOfService />} />
-=======
+              <Route path="/projeto/:slug" element={<ProjectDetails />} />
               <Route path="/politica-de-privacidade" element={<PrivacyPolicy />} />
               <Route path="/termos-de-servico" element={<TermsOfService />} />
->>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
               
               {/* Admin Routes */}
               <Route path="/admin" element={

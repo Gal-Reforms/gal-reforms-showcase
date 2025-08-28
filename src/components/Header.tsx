@@ -12,6 +12,7 @@ const Header = () => {
   const { data: settings } = useSiteSettings();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -19,6 +20,7 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
   const handleNavigation = (sectionId: string) => {
     if (location.pathname !== '/') {
       // If not on home page, navigate to home with hash
@@ -32,11 +34,14 @@ const Header = () => {
     }
     setIsMobileMenuOpen(false);
   };
+
   const handleLogoClick = () => {
     navigate('/');
     setIsMobileMenuOpen(false);
   };
-  return <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "bg-background/95 backdrop-blur-md shadow-soft" : "bg-transparent"}`}>
+
+  return (
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "bg-background/95 backdrop-blur-md shadow-soft" : "bg-transparent"}`}>
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
@@ -85,7 +90,6 @@ const Header = () => {
         {isMobileMenuOpen && (
           <>
             <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setIsMobileMenuOpen(false)} />
-<<<<<<< HEAD
             <div className="fixed top-20 left-0 right-0 bg-background/98 backdrop-blur-md border-t border-border py-4 px-4 shadow-lg animate-fade-in z-50 md:hidden max-h-[calc(100vh-5rem)] overflow-y-auto">
               <nav className="flex flex-col space-y-4">
                 <button 
@@ -93,46 +97,24 @@ const Header = () => {
                   className="flex items-center space-x-3 text-left text-foreground hover:text-primary transition-colors font-medium py-3 text-base rounded-lg hover:bg-primary/5 px-3"
                 >
                   <span className="text-primary text-xl">🏠</span>
-=======
-            <div className="fixed top-20 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border py-6 px-4 shadow-lg animate-fade-in z-50 md:hidden">
-              <nav className="flex flex-col space-y-6">
-                <button 
-                  onClick={() => handleNavigation("home")} 
-                  className="flex items-center space-x-3 text-left text-foreground hover:text-primary transition-colors font-medium py-3 text-lg"
-                >
-                  <span className="text-primary">🏠</span>
->>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                   <span>{t('home')}</span>
                 </button>
                 <button 
                   onClick={() => handleNavigation("about")} 
-<<<<<<< HEAD
                   className="flex items-center space-x-3 text-left text-foreground hover:text-primary transition-colors font-medium py-3 text-base rounded-lg hover:bg-primary/5 px-3"
                 >
                   <span className="text-primary text-xl">👥</span>
-=======
-                  className="flex items-center space-x-3 text-left text-foreground hover:text-primary transition-colors font-medium py-3 text-lg"
-                >
-                  <span className="text-primary">👥</span>
->>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                   <span>{t('about')}</span>
                 </button>
                 <button 
                   onClick={() => handleNavigation("projects")} 
-<<<<<<< HEAD
                   className="flex items-center space-x-3 text-left text-foreground hover:text-primary transition-colors font-medium py-3 text-base rounded-lg hover:bg-primary/5 px-3"
                 >
                   <span className="text-primary text-xl">🏗️</span>
-=======
-                  className="flex items-center space-x-3 text-left text-foreground hover:text-primary transition-colors font-medium py-3 text-lg"
-                >
-                  <span className="text-primary">🏗️</span>
->>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                   <span>{t('projects')}</span>
                 </button>
                 <button 
                   onClick={() => handleNavigation("contact")} 
-<<<<<<< HEAD
                   className="flex items-center space-x-3 text-left text-foreground hover:text-primary transition-colors font-medium py-3 text-base rounded-lg hover:bg-primary/5 px-3"
                 >
                   <span className="text-primary text-xl">📞</span>
@@ -143,22 +125,11 @@ const Header = () => {
                 <div className="pt-4 border-t border-border space-y-3">
                   <div className="flex items-center space-x-2 text-sm text-muted-foreground px-3">
                     <Phone size={16} />
-                    <span>+34 XXX XXX XXX</span>
+                    <span>{settings?.phone_number || "+34 XXX XXX XXX"}</span>
                   </div>
                   <Button 
                     variant="default" 
-                    className="w-full bg-primary hover:bg-primary-dark text-primary-foreground text-base py-3 rounded-lg" 
-=======
-                  className="flex items-center space-x-3 text-left text-foreground hover:text-primary transition-colors font-medium py-3 text-lg"
-                >
-                  <span className="text-primary">📞</span>
-                  <span>{t('contact')}</span>
-                </button>
-                <div className="pt-4 border-t border-border">
-                  <Button 
-                    variant="default" 
-                    className="w-full bg-primary hover:bg-primary-dark text-primary-foreground text-lg py-4" 
->>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
+                    className="w-full bg-primary hover:bg-primary-dark text-primary-foreground text-base py-3 rounded-lg"
                     onClick={() => handleNavigation("contact")}
                   >
                     {t('freeQuote')}
@@ -169,6 +140,8 @@ const Header = () => {
           </>
         )}
       </div>
-    </header>;
+    </header>
+  );
 };
+
 export default Header;
