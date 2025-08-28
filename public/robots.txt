@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.galreformas.com.es/sitemap.xml
+
+# Disallow admin areas
+Disallow: /admin/
+Disallow: /auth/
+
+# Allow important pages
+Allow: /
+Allow: /proyecto/
+Allow: /politica-de-privacidad
+Allow: /terminos-de-servicio
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1

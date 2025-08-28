@@ -1,0 +1,26 @@
+{
+  "name": "Gal Reforms S.L - Construcción y Reformas de Excelencia",
+  "short_name": "Gal Reforms",
+  "description": "Empresa especializada en construcción y reformas con más de 15 años de experiencia en Madrid",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#B8860B",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/lovable-uploads/716cbf54-69ef-47e4-95a7-ec95811b8e9c.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/lovable-uploads/716cbf54-69ef-47e4-95a7-ec95811b8e9c.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "construction", "renovation"],
+  "lang": "es-ES"
+}
