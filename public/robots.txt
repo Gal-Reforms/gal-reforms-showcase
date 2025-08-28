@@ -1,8 +1,13 @@
 User-agent: *
 Allow: /
 
+<<<<<<< HEAD
 # Sitemap
 Sitemap: https://www.galreformas.com.es/sitemap.xml
+=======
+# Sitemaps
+Sitemap: https://galreforms.lovable.app/sitemap.xml
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
 
 # Disallow admin areas
 Disallow: /admin/
@@ -11,8 +16,16 @@ Disallow: /auth/
 # Allow important pages
 Allow: /
 Allow: /proyecto/
+<<<<<<< HEAD
 Allow: /politica-de-privacidad
 Allow: /terminos-de-servicio
 
 # Crawl-delay for respectful crawling
 Crawl-delay: 1
+=======
+Allow: /politica-de-privacidade
+Allow: /termos-de-servico
+
+# Crawl-delay for better server performance
+Crawl-delay: 1
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196

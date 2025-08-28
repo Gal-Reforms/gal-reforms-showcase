@@ -6,11 +6,17 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+<<<<<<< HEAD
     "build:prod": "vite build --mode production",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
     "analyze": "vite build --mode production && npx vite-bundle-analyzer dist/stats.html"
+=======
+    "build:dev": "vite build --mode development",
+    "lint": "eslint .",
+    "preview": "vite preview"
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

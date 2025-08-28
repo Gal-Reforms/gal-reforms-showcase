@@ -24,10 +24,17 @@ const WhatsAppButton = () => {
       className="whatsapp-float group"
       aria-label={t('whatsappTooltip')}
     >
+<<<<<<< HEAD
       <MessageCircle className="w-6 md:w-7 h-6 md:h-7 text-white group-hover:scale-110 transition-transform" />
       
       {/* Tooltip - Hidden on mobile for better UX */}
       <div className="hidden md:block absolute right-16 top-1/2 -translate-y-1/2 bg-gray-900 text-white px-3 py-2 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">
+=======
+      <MessageCircle className="w-7 w-7 text-white group-hover:scale-110 transition-transform" />
+      
+      {/* Tooltip */}
+      <div className="absolute right-16 top-1/2 -translate-y-1/2 bg-gray-900 text-white px-3 py-2 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
         {t('whatsappTooltip')}
         <div className="absolute left-full top-1/2 -translate-y-1/2 border-4 border-transparent border-l-gray-900"></div>
       </div>

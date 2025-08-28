@@ -75,6 +75,7 @@ const Hero = () => {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-4xl text-white">
               <AnimatedSection animation="fade-in-up" delay={0}>
+<<<<<<< HEAD
                 <h1 className="text-hero font-serif mb-4 md:mb-6 leading-tight">
                   {slides[currentSlide].title}
                 </h1>
@@ -86,6 +87,19 @@ const Hero = () => {
                   <Button 
                     size="lg" 
                     className="bg-primary hover:bg-primary-dark text-primary-foreground shadow-gold text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 hover-glow transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
+=======
+                <h1 className="text-hero font-serif mb-6">
+                  {slides[currentSlide].title}
+                </h1>
+                <p className="text-subtitle mb-8 max-w-2xl opacity-90">
+                  {slides[currentSlide].subtitle}
+                </p>
+                
+                <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-fade-in-up">
+                  <Button 
+                    size="lg" 
+                    className="bg-primary hover:bg-primary-dark text-primary-foreground shadow-gold text-lg px-8 py-6 hover-glow transition-all duration-300 transform hover:scale-105"
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                     onClick={() => scrollToSection("contact")}
                   >
                     {t('requestQuote')}
@@ -93,7 +107,11 @@ const Hero = () => {
                   <Button 
                     size="lg" 
                     variant="outline" 
+<<<<<<< HEAD
                     className="border-2 border-white text-white hover:bg-white hover:text-foreground text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 backdrop-blur-sm bg-white/10 transition-all duration-300 transform hover:scale-105 w-full sm:w-auto"
+=======
+                    className="border-2 border-white text-white hover:bg-white hover:text-foreground text-lg px-8 py-6 backdrop-blur-sm bg-white/10 transition-all duration-300 transform hover:scale-105"
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                     onClick={() => scrollToSection("projects")}
                   >
                     {t('viewProjects')}
@@ -103,6 +121,7 @@ const Hero = () => {
 
             {/* Stats */}
             <AnimatedSection animation="fade-in-up" delay={600}>
+<<<<<<< HEAD
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-2xl mx-auto">
                 <div className="flex items-center space-x-3 stagger-item backdrop-blur-sm bg-white/10 rounded-lg p-3 sm:p-4 hover-scale">
                   <Award className="w-6 sm:w-8 h-6 sm:h-8 text-primary animate-float flex-shrink-0" />
@@ -123,6 +142,28 @@ const Hero = () => {
                   <div className="min-w-0">
                     <div className="text-xl sm:text-2xl font-bold">100%</div>
                     <div className="text-xs sm:text-sm opacity-80 leading-tight">{t('satisfactionGuaranteed')}</div>
+=======
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto">
+                <div className="flex items-center space-x-3 stagger-item backdrop-blur-sm bg-white/10 rounded-lg p-4 hover-scale">
+                  <Award className="w-8 h-8 text-primary animate-float" />
+                  <div>
+                    <div className="text-2xl font-bold">15+</div>
+                    <div className="text-sm opacity-80">{t('yearsExperience')}</div>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3 stagger-item backdrop-blur-sm bg-white/10 rounded-lg p-4 hover-scale">
+                  <Users className="w-8 h-8 text-primary animate-float" style={{ animationDelay: '1s' }} />
+                  <div>
+                    <div className="text-2xl font-bold">500+</div>
+                    <div className="text-sm opacity-80">{t('projectsCompleted')}</div>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3 stagger-item backdrop-blur-sm bg-white/10 rounded-lg p-4 hover-scale">
+                  <Clock className="w-8 h-8 text-primary animate-float" style={{ animationDelay: '2s' }} />
+                  <div>
+                    <div className="text-2xl font-bold">100%</div>
+                    <div className="text-sm opacity-80">{t('satisfactionGuaranteed')}</div>
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                   </div>
                 </div>
               </div>
@@ -134,6 +175,7 @@ const Hero = () => {
       {/* Navigation Arrows */}
       <button
         onClick={prevSlide}
+<<<<<<< HEAD
         className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 md:p-3 transition-all shadow-lg"
         aria-label="Imagen anterior"
       >
@@ -149,14 +191,35 @@ const Hero = () => {
 
       {/* Slide Indicators */}
       <div className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 z-30 flex space-x-2 md:space-x-3">
+=======
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-3 transition-all"
+      >
+        <ChevronLeft className="w-6 h-6 text-white" />
+      </button>
+      <button
+        onClick={nextSlide}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-3 transition-all"
+      >
+        <ChevronRight className="w-6 h-6 text-white" />
+      </button>
+
+      {/* Slide Indicators */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex space-x-3">
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
+<<<<<<< HEAD
             className={`w-2 md:w-3 h-2 md:h-3 rounded-full transition-all ${
               index === currentSlide ? "bg-primary scale-125" : "bg-white/50 hover:bg-white/70"
             }`}
             aria-label={`Ir a imagen ${index + 1}`}
+=======
+            className={`w-3 h-3 rounded-full transition-all ${
+              index === currentSlide ? "bg-primary scale-125" : "bg-white/50 hover:bg-white/70"
+            }`}
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
           />
         ))}
       </div>

@@ -19,6 +19,7 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+<<<<<<< HEAD
   build: {
     rollupOptions: {
       output: {
@@ -33,4 +34,6 @@ export default defineConfig(({ mode }) => ({
     sourcemap: mode === 'development',
     minify: mode === 'production' ? 'esbuild' : false,
   },
+=======
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
 }));

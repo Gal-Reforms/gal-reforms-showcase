@@ -118,10 +118,17 @@ const Contact = () => {
           </div>
         </AnimatedSection>
 
+<<<<<<< HEAD
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
           {/* Contact Information */}
           <AnimatedSection animation="fade-in-left">
             <div className="lg:col-span-1 space-y-4 md:space-y-6">
+=======
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          {/* Contact Information */}
+          <AnimatedSection animation="fade-in-left">
+            <div className="lg:col-span-1 space-y-6">
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
               <div ref={staggerRef}>
                 {contactInfo.map((info, index) => (
                   <Card 
@@ -133,6 +140,7 @@ const Contact = () => {
                     }`}
                     style={{ transitionDelay: `${index * 150}ms` }}
                   >
+<<<<<<< HEAD
                     <CardContent className="p-4 md:p-6">
                       <div className="flex items-start space-x-3 md:space-x-4">
                         <div className="w-10 md:w-12 h-10 md:h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -142,6 +150,17 @@ const Contact = () => {
                           <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">{info.title}</h3>
                           <p className="text-muted-foreground text-xs md:text-sm mb-1">{info.description}</p>
                           <p className="font-medium text-foreground text-sm md:text-base break-words">{info.content}</p>
+=======
+                    <CardContent className="p-6">
+                      <div className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <info.icon className="w-6 h-6 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-foreground mb-1">{info.title}</h3>
+                          <p className="text-muted-foreground text-sm mb-1">{info.description}</p>
+                          <p className="font-medium text-foreground">{info.content}</p>
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                         </div>
                       </div>
                     </CardContent>
@@ -151,6 +170,7 @@ const Contact = () => {
 
               {/* WhatsApp CTA */}
               <Card className="bg-[#25D366]/5 border-[#25D366]/20 hover-lift animate-bounce-in">
+<<<<<<< HEAD
                 <CardContent className="p-4 md:p-6 text-center">
                   <div className="w-12 md:w-16 h-12 md:h-16 bg-[#25D366] rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4 animate-pulse-glow">
                     <Phone className="w-6 md:w-8 h-6 md:h-8 text-white" />
@@ -161,6 +181,18 @@ const Contact = () => {
                   </p>
                   <Button 
                     className="w-full bg-[#25D366] hover:bg-[#25D366]/90 text-white hover-glow transition-all duration-300 text-sm md:text-base py-2 md:py-3"
+=======
+                <CardContent className="p-6 text-center">
+                  <div className="w-16 h-16 bg-[#25D366] rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
+                    <Phone className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="font-semibold text-foreground mb-2">{t('whatsappContact')}</h3>
+                  <p className="text-muted-foreground text-sm mb-4">
+                    Habla con nosotros directamente por WhatsApp para respuestas más rápidas.
+                  </p>
+                  <Button 
+                    className="w-full bg-[#25D366] hover:bg-[#25D366]/90 text-white hover-glow transition-all duration-300"
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                     onClick={() => {
                       const phoneNumber = settings?.whatsapp_number || "34XXXXXXXXX";
                       const cleanPhoneNumber = phoneNumber.replace(/[\s\-\(\)\+]/g, '');
@@ -178,6 +210,7 @@ const Contact = () => {
           <AnimatedSection animation="fade-in-right" delay={200}>
             <div className="lg:col-span-2">
               <Card className="shadow-elegant hover-lift transition-all duration-500 bg-card/95 backdrop-blur-md">
+<<<<<<< HEAD
                 <CardHeader className="p-4 md:p-6">
                   <CardTitle className="text-xl md:text-2xl font-display text-foreground">
                     {t('requestQuote')}
@@ -186,6 +219,16 @@ const Contact = () => {
                 <CardContent className="p-4 md:p-6 pt-0">
                   <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+=======
+                <CardHeader>
+                  <CardTitle className="text-2xl font-display text-foreground">
+                    {t('requestQuote')}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                       <div className="space-y-2 group">
                         <Label htmlFor="name" className="text-foreground font-medium">{t('fullName')} *</Label>
                         <Input
@@ -218,20 +261,34 @@ const Contact = () => {
                       </div>
                     </div>
 
+<<<<<<< HEAD
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                       <div className="space-y-2 group">
                         <Label htmlFor="phone" className="text-foreground font-medium text-sm md:text-base">{t('phone')}</Label>
+=======
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2 group">
+                        <Label htmlFor="phone" className="text-foreground font-medium">{t('phone')}</Label>
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                         <Input
                           id="phone"
                           name="phone"
                           value={formData.phone}
                           onChange={handleChange}
+<<<<<<< HEAD
                           className="focus:ring-primary focus:border-primary transition-all duration-300 focus:scale-105 text-sm md:text-base"
+=======
+                          className="focus:ring-primary focus:border-primary transition-all duration-300 focus:scale-105"
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                           placeholder="+34 XXX XXX XXX"
                         />
                       </div>
                       <div className="space-y-2 group">
+<<<<<<< HEAD
                         <Label htmlFor="subject" className="text-foreground font-medium text-sm md:text-base">{t('subject')} *</Label>
+=======
+                        <Label htmlFor="subject" className="text-foreground font-medium">{t('subject')} *</Label>
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                         <Input
                           id="subject"
                           name="subject"
@@ -239,13 +296,21 @@ const Contact = () => {
                           value={formData.subject}
                           onChange={handleChange}
                           required
+<<<<<<< HEAD
                           className="focus:ring-primary focus:border-primary transition-all duration-300 focus:scale-105 text-sm md:text-base"
+=======
+                          className="focus:ring-primary focus:border-primary transition-all duration-300 focus:scale-105"
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                         />
                       </div>
                     </div>
 
                     <div className="space-y-2 group">
+<<<<<<< HEAD
                       <Label htmlFor="message" className="text-foreground font-medium text-sm md:text-base">{t('message')} *</Label>
+=======
+                      <Label htmlFor="message" className="text-foreground font-medium">{t('message')} *</Label>
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                       <Textarea
                         id="message"
                         name="message"
@@ -253,8 +318,13 @@ const Contact = () => {
                         value={formData.message}
                         onChange={handleChange}
                         required
+<<<<<<< HEAD
                         rows={4}
                         className="focus:ring-primary focus:border-primary transition-all duration-300 resize-none text-sm md:text-base min-h-[100px] md:min-h-[120px]"
+=======
+                        rows={6}
+                        className="focus:ring-primary focus:border-primary transition-all duration-300 resize-none"
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                       />
                     </div>
 
@@ -262,7 +332,11 @@ const Contact = () => {
                       type="submit" 
                       size="lg" 
                       disabled={loading}
+<<<<<<< HEAD
                       className="w-full bg-primary hover:bg-primary-dark text-primary-foreground shadow-gold hover-glow transition-all duration-300 transform hover:scale-105 text-sm md:text-base py-3 md:py-4"
+=======
+                      className="w-full bg-primary hover:bg-primary-dark text-primary-foreground shadow-gold hover-glow transition-all duration-300 transform hover:scale-105"
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                     >
                       {loading ? 'Enviando...' : t('sendMessage')}
                     </Button>

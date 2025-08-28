@@ -266,11 +266,19 @@
   /* WhatsApp Button */
   .whatsapp-float {
     position: fixed;
+<<<<<<< HEAD
     bottom: 20px;
     right: 20px;
     z-index: 1000;
     width: 56px;
     height: 56px;
+=======
+    bottom: 24px;
+    right: 24px;
+    z-index: 1000;
+    width: 60px;
+    height: 60px;
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
     background: #25D366;
     border-radius: 50%;
     display: flex;
@@ -280,6 +288,7 @@
     transition: all 0.3s ease;
   }
 
+<<<<<<< HEAD
   @media (min-width: 768px) {
     .whatsapp-float {
       bottom: 24px;
@@ -289,10 +298,13 @@
     }
   }
 
+=======
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
   .whatsapp-float:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
   }
+<<<<<<< HEAD
 
   /* Mobile-specific improvements */
   @media (max-width: 768px) {
@@ -360,6 +372,8 @@
       min-width: 0;
     }
   }
+=======
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
 }
 
 @layer utilities {

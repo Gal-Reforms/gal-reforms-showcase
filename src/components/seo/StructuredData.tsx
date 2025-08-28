@@ -43,9 +43,15 @@ export const OrganizationSchema = () => {
     "@type": "Organization",
     "name": "Gal Reforms S.L",
     "description": settings?.company_description || "Empresa especializada en construcción y reformas con más de 15 años de experiencia. Calidad premium, diseño sofisticado y acabados impecables en Madrid y región.",
+<<<<<<< HEAD
     "url": "https://www.galreformas.com.es",
     "logo": "https://www.galreformas.com.es/lovable-uploads/716cbf54-69ef-47e4-95a7-ec95811b8e9c.png",
     "image": "https://www.galreformas.com.es/lovable-uploads/716cbf54-69ef-47e4-95a7-ec95811b8e9c.png",
+=======
+    "url": window.location.origin,
+    "logo": `${window.location.origin}/lovable-uploads/716cbf54-69ef-47e4-95a7-ec95811b8e9c.png`,
+    "image": `${window.location.origin}/lovable-uploads/716cbf54-69ef-47e4-95a7-ec95811b8e9c.png`,
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
     "telephone": settings?.phone_number || "+34612345678",
     "address": {
       "@type": "PostalAddress",
@@ -102,8 +108,13 @@ export const ProjectSchema = ({ project }: ProjectSchemaProps) => {
     "@type": "CreativeWork",
     "name": project.title,
     "description": project.description || `Proyecto de ${project.category} realizado por Gal Reforms S.L`,
+<<<<<<< HEAD
     "url": `https://www.galreformas.com.es/proyecto/${project.slug}`,
     "image": project.cover_image || "https://www.galreformas.com.es/placeholder-project.jpg",
+=======
+    "url": `${window.location.origin}/proyecto/${project.slug}`,
+    "image": project.cover_image || `${window.location.origin}/placeholder-project.jpg`,
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
     "creator": {
       "@type": "Organization",
       "name": "Gal Reforms S.L"

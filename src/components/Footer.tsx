@@ -53,7 +53,11 @@ const Footer = () => {
                 href={settings?.facebook_url || "https://facebook.com/galreforms"} 
                 target="_blank"
                 rel="noopener noreferrer"
+<<<<<<< HEAD
                 aria-label="Síguenos en Facebook"
+=======
+                aria-label="Siga-nos no Facebook"
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                 className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary-light transition-colors"
               >
                 <Facebook className="w-5 h-5 text-white" />
@@ -62,7 +66,11 @@ const Footer = () => {
                 href={settings?.instagram_url || "https://instagram.com/galreforms"} 
                 target="_blank"
                 rel="noopener noreferrer"
+<<<<<<< HEAD
                 aria-label="Síguenos en Instagram"
+=======
+                aria-label="Siga-nos no Instagram"
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                 className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary-light transition-colors"
               >
                 <Instagram className="w-5 h-5 text-white" />
@@ -71,7 +79,11 @@ const Footer = () => {
                 href={settings?.linkedin_url || "https://linkedin.com/company/galreforms"} 
                 target="_blank"
                 rel="noopener noreferrer"
+<<<<<<< HEAD
                 aria-label="Conéctate en LinkedIn"
+=======
+                aria-label="Conecte-se no LinkedIn"
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                 className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary-light transition-colors"
               >
                 <Linkedin className="w-5 h-5 text-white" />
@@ -82,7 +94,11 @@ const Footer = () => {
           {/* Services */}
           <div>
             <h3 className="text-lg font-serif font-semibold mb-6 text-primary">
+<<<<<<< HEAD
               {t('servicesTitle')}
+=======
+              Nossos Serviços
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
             </h3>
             <ul className="space-y-3">
               {services.map((service, index) => (
@@ -98,7 +114,11 @@ const Footer = () => {
           {/* Quick Links */}
           <div>
             <h3 className="text-lg font-serif font-semibold mb-6 text-primary">
+<<<<<<< HEAD
               {t('quickLinks')}
+=======
+              Links Rápidos
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
             </h3>
             <ul className="space-y-3">
               {quickLinks.map((link, index) => (
@@ -117,14 +137,23 @@ const Footer = () => {
           {/* Contact Info */}
           <div>
             <h3 className="text-lg font-serif font-semibold mb-6 text-primary">
+<<<<<<< HEAD
               {t('contact')}
+=======
+              Contato
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
             </h3>
             <div className="space-y-4">
               <div className="flex items-start space-x-3">
                 <MapPin className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                 <div>
+<<<<<<< HEAD
                   <p className="text-background/80">{settings?.address || t('madrid')}</p>
                   <p className="text-background/60 text-sm">Atendemos toda la región</p>
+=======
+                  <p className="text-background/80">{settings?.address || "Madrid, Espanha"}</p>
+                  <p className="text-background/60 text-sm">Atendemos toda região</p>
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                 </div>
               </div>
               
@@ -132,23 +161,37 @@ const Footer = () => {
                 <Phone className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                 <div>
                   <p className="text-background/80">{settings?.phone_number || "+34 XXX XXX XXX"}</p>
+<<<<<<< HEAD
                   <p className="text-background/60 text-sm">WhatsApp disponible</p>
+=======
+                  <p className="text-background/60 text-sm">WhatsApp disponível</p>
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                 </div>
               </div>
               
               <div className="flex items-start space-x-3">
                 <Mail className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                 <div>
+<<<<<<< HEAD
                   <p className="text-background/80">{settings?.email || "contacto@galreforms.com"}</p>
                   <p className="text-background/60 text-sm">Respuesta en 24h</p>
+=======
+                  <p className="text-background/80">{settings?.email || "contato@galreforms.com"}</p>
+                  <p className="text-background/60 text-sm">Resposta em 24h</p>
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                 </div>
               </div>
               
               <div className="flex items-start space-x-3">
                 <Clock className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                 <div>
+<<<<<<< HEAD
                   <p className="text-background/80">{settings?.working_hours_weekdays || t('businessHours')}</p>
                   <p className="text-background/60 text-sm">{settings?.working_hours_saturday || "Sáb: 9h - 14h"}</p>
+=======
+                  <p className="text-background/80">{settings?.working_hours_weekdays || "Seg - Sex: 8h às 18h"}</p>
+                  <p className="text-background/60 text-sm">{settings?.working_hours_saturday || "Sáb: 9h às 14h"}</p>
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                 </div>
               </div>
             </div>
@@ -159,6 +202,7 @@ const Footer = () => {
         <div className="border-t border-background/20 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-background/60 text-sm">
+<<<<<<< HEAD
               © {currentYear} Gal Reforms S.L. {t('allRightsReserved')}
             </p>
             <div className="flex space-x-6 text-sm">
@@ -167,6 +211,16 @@ const Footer = () => {
               </a>
               <a href={settings?.terms_of_service_url || "/terminos-de-servicio"} className="text-background/60 hover:text-primary transition-colors">
                 {t('termsOfService')}
+=======
+              © {currentYear} Gal Reforms S.L. Todos os direitos reservados.
+            </p>
+            <div className="flex space-x-6 text-sm">
+              <a href={settings?.privacy_policy_url || "/politica-de-privacidade"} className="text-background/60 hover:text-primary transition-colors">
+                Política de Privacidade
+              </a>
+              <a href={settings?.terms_of_service_url || "/termos-de-servico"} className="text-background/60 hover:text-primary transition-colors">
+                Termos de Serviço
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
               </a>
             </div>
           </div>

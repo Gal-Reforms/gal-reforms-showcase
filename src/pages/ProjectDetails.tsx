@@ -201,6 +201,7 @@ const ProjectDetails = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-7xl mx-auto">
             <Tabs defaultValue="gallery" className="w-full">
+<<<<<<< HEAD
               <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 mb-8 h-auto">
                 <TabsTrigger value="gallery" className="text-xs md:text-sm py-2 px-2 md:px-4">
                   {t('gallery')}
@@ -217,6 +218,14 @@ const ProjectDetails = () => {
                 <TabsTrigger value="details" className="text-xs md:text-sm py-2 px-2 md:px-4">
                   Detalles
                 </TabsTrigger>
+=======
+              <TabsList className="grid w-full grid-cols-5 mb-8">
+                <TabsTrigger value="gallery">{t('gallery')}</TabsTrigger>
+                <TabsTrigger value="content">Conteúdo</TabsTrigger>
+                <TabsTrigger value="beforeafter">{t('beforeAfter')}</TabsTrigger>
+                <TabsTrigger value="videos">Vídeos</TabsTrigger>
+                <TabsTrigger value="details">{t('projectDetails')}</TabsTrigger>
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
               </TabsList>
 
               {/* Gallery Tab */}
@@ -234,12 +243,20 @@ const ProjectDetails = () => {
               {/* Content Blocks Tab */}
               <TabsContent value="content" className="space-y-6">
                 <AnimatedSection>
+<<<<<<< HEAD
                   <h2 className="text-2xl md:text-3xl font-bold mb-6">Contenido del Proyecto</h2>
+=======
+                  <h2 className="text-3xl font-bold mb-6">Conteúdo do Projeto</h2>
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                   {contentBlocks && contentBlocks.length > 0 ? (
                     <ContentBlockRenderer blocks={contentBlocks} />
                   ) : (
                     <div className="text-center py-12">
+<<<<<<< HEAD
                       <p className="text-muted-foreground mb-4">Ningún contenido personalizado disponible.</p>
+=======
+                      <p className="text-muted-foreground mb-4">Nenhum conteúdo personalizado disponível.</p>
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                       {project.long_description && (
                         <div className="max-w-4xl mx-auto text-left">
                           <div 
@@ -272,7 +289,11 @@ const ProjectDetails = () => {
               {/* Videos Tab */}
               <TabsContent value="videos" className="space-y-6">
                 <AnimatedSection>
+<<<<<<< HEAD
                   <h2 className="text-2xl md:text-3xl font-bold mb-6">Videos del Proyecto</h2>
+=======
+                  <h2 className="text-3xl font-bold mb-6">Vídeos do Projeto</h2>
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                   {project.videos && project.videos.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {project.videos.map((video) => (
@@ -284,7 +305,11 @@ const ProjectDetails = () => {
                                 className="w-full h-full object-cover"
                                 controls
                                 muted={video.muted || false}
+<<<<<<< HEAD
                                 title={video.title || 'Video del proyecto'}
+=======
+                                title={video.title || 'Vídeo do projeto'}
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                               />
                             ) : (
                               <iframe
@@ -293,6 +318,7 @@ const ProjectDetails = () => {
                                 frameBorder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen
+<<<<<<< HEAD
                                 title={video.title || 'Video del proyecto'}
                               />
                             )}
@@ -300,22 +326,43 @@ const ProjectDetails = () => {
                           <div className="flex items-center gap-2 flex-wrap">
                             {video.title && (
                               <h3 className="text-base md:text-lg font-semibold">{video.title}</h3>
+=======
+                                title={video.title || 'Vídeo do projeto'}
+                              />
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {video.title && (
+                              <h3 className="text-lg font-semibold">{video.title}</h3>
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                             )}
                             {video.muted && (
                               <Badge variant="secondary" className="text-xs">
                                 <VolumeX className="w-3 h-3 mr-1" />
+<<<<<<< HEAD
                                 Sin sonido
+=======
+                                Sem som
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                               </Badge>
                             )}
                           </div>
                           {video.description && (
+<<<<<<< HEAD
                             <p className="text-muted-foreground text-sm">{video.description}</p>
+=======
+                            <p className="text-muted-foreground">{video.description}</p>
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                           )}
                         </div>
                       ))}
                     </div>
                   ) : (
+<<<<<<< HEAD
                     <p className="text-muted-foreground text-center py-12">Ningún video disponible</p>
+=======
+                    <p className="text-muted-foreground text-center py-12">Nenhum vídeo disponível</p>
+>>>>>>> 4b24c9a7762fca49ce2603841a5c86fb8237b196
                   )}
                 </AnimatedSection>
               </TabsContent>
